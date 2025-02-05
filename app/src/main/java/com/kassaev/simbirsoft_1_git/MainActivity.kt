@@ -15,6 +15,7 @@ import com.kassaev.simbirsoft_1_git.ui.theme.Simbirsoft_1_gitTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_Simbirsoft_1_git)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
