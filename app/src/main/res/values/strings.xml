@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">I want to help</string>
+    <string name="loading">Loading...</string>
 </resources>
