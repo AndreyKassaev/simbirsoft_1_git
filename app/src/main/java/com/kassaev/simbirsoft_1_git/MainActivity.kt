@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.kassaev.simbirsoft_1_git.navigation.Navigation
 import com.kassaev.simbirsoft_1_git.ui.theme.Simbirsoft_1_gitTheme
 import kotlinx.coroutines.Runnable
 
@@ -46,12 +47,7 @@ class MainActivity : ComponentActivity() {
     private fun setContentCompose() {
         setContent {
             Simbirsoft_1_gitTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Text(
-                        text = "On Create",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Navigation()
             }
         }
     }
