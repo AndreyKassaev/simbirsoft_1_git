@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
             insets
         }
         val runnable = Runnable {
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), null)
             setContentCompose()
         }
         onBackPressedDispatcher.addCallback(this) {

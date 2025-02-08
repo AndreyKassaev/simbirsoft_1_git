@@ -5,8 +5,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed class Router{
     @Serializable
-    data object MainScreen: Router()
+    data object News: Router()
     @Serializable
-    data object ProfileScreen: Router()
+    data object Search: Router()
+    @Serializable
+    data object Help: Router()
+    @Serializable
+    data object History: Router()
+    @Serializable
+    data object Profile: Router()
 }
 

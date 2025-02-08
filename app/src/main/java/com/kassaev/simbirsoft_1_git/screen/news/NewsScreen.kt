@@ -1,4 +1,4 @@
-package com.kassaev.simbirsoft_1_git.screen.main
+package com.kassaev.simbirsoft_1_git.screen.news
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -8,13 +8,13 @@ import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
 
 @Composable
-fun MainScreen() {
+fun NewsScreen() {
     val navController = LocalNavController.current
     Column {
-        Text("Main Screen")
+        Text("News")
         Button(
             onClick = {
-                navController.navigate(Router.ProfileScreen)
+                navController.navigate(Router.Profile)
             }
         ) {
             Text("To profile")
