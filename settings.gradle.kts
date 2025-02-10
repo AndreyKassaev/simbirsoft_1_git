@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "simbirsoft_1_git"
 include(":app")
- 

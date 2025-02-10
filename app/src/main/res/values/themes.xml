@@ -2,4 +2,7 @@
 <resources>
 
     <style name="Theme.Simbirsoft_1_git" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.Launcher" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launcher</item>
+    </style>
 </resources>
