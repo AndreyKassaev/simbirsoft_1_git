@@ -6,4 +6,7 @@
     <string name="help">Help</string>
     <string name="history">History</string>
     <string name="profile">Profile</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="cancel_edit_profile">Cancel edit profile</string>
+    <string name="save_edit_profile">Save edit profile</string>
 </resources>

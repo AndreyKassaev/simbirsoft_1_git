@@ -17,7 +17,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kassaev.simbirsoft_1_git.R
-import com.kassaev.simbirsoft_1_git.model.BottomBarItem
+import com.kassaev.simbirsoft_1_git.util.BottomBarItem
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
 

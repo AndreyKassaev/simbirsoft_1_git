@@ -7,4 +7,7 @@
     <string name="help">Помочь</string>
     <string name="history">История</string>
     <string name="profile">Профиль</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="cancel_edit_profile">Отменить редактирование профиля</string>
+    <string name="save_edit_profile">Сохранить изменения профиля</string>
 </resources>

@@ -73,4 +73,11 @@ dependencies {
     //Serialization
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm
     implementation(libs.kotlinx.serialization.json)
+
+    //Koin DI
+    // https://mvnrepository.com/artifact/io.insert-koin/koin-android
+    implementation(libs.koin.android)
+    // https://mvnrepository.com/artifact/io.insert-koin/koin-androidx-compose
+    implementation(libs.koin.androidx.compose)
+
 }

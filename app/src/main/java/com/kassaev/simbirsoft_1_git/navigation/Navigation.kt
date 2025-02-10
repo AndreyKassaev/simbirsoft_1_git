@@ -2,11 +2,14 @@ package com.kassaev.simbirsoft_1_git.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -24,17 +27,22 @@ val LocalNavController = compositionLocalOf<NavController> {
     error("No NavController found!")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Navigation() {
 
     val navController = rememberNavController()
-
+    var (topAppBar, setTopAppBar) = remember {
+        mutableStateOf<@Composable () -> Unit>({})
+    }
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            topBar = {},
+            topBar = {
+                topAppBar()
+            },
             bottomBar = {
                 BottomBar()
             },
@@ -49,19 +57,19 @@ fun Navigation() {
                 startDestination = Router.Profile
             ) {
                 composable<Router.News> {
-                    NewsScreen()
+                    NewsScreen(setTopAppBar = setTopAppBar)
                 }
                 composable<Router.Search> {
-                    SearchScreen()
+                    SearchScreen(setTopAppBar = setTopAppBar)
                 }
                 composable<Router.Help> {
-                    HelpScreen()
+                    HelpScreen(setTopAppBar = setTopAppBar)
                 }
                 composable<Router.History> {
-                    HistoryScreen()
+                    HistoryScreen(setTopAppBar = setTopAppBar)
                 }
                 composable<Router.Profile> {
-                    ProfileScreen()
+                    ProfileScreen(setTopAppBar = setTopAppBar)
                 }
             }
         }
