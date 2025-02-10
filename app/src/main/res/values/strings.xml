@@ -9,4 +9,11 @@
     <string name="edit_profile">Edit profile</string>
     <string name="cancel_edit_profile">Cancel edit profile</string>
     <string name="save_edit_profile">Save edit profile</string>
+    <string name="profile_image">Profile image</string>
+    <string name="birth_date">Date of birth</string>
+    <string name="occupation">Occupation</string>
+    <string name="enable_push">Enable push-notification</string>
+    <string name="your_friends">Your friends</string>
+    <string name="logout">Logout</string>
+    <string name="friend">Friend</string>
 </resources>

@@ -80,4 +80,7 @@ dependencies {
     // https://mvnrepository.com/artifact/io.insert-koin/koin-androidx-compose
     implementation(libs.koin.androidx.compose)
 
+    //Coil
+    //https://coil-kt.github.io/coil/compose/
+    implementation(libs.coil.compose)
 }
