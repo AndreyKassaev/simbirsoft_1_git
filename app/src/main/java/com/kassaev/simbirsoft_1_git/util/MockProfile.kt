@@ -7,11 +7,11 @@ fun getMockProfile() =
     Profile(
         id = "UUID-0001",
         imageUrl = "https://kassaev.com/media/android_11.png",
-        firstName = "Денис",
+        firstName = "Имя",
         middleName = "",
-        lastName = "Константинов",
-        birthDate = "10 февраля 1980",
-        occupation = "Хириргия, травматология",
+        lastName = "Фамилия",
+        birthDate = "01 января 1970",
+        occupation = "Computer science",
         isPushEnabled = true,
         friendList = List(10) {
             getMockFriend()
