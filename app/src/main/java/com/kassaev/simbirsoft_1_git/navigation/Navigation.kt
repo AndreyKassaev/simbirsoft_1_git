@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,11 +38,15 @@ fun Navigation() {
     var (topAppBar, setTopAppBar) = remember {
         mutableStateOf<@Composable () -> Unit>({})
     }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+
     CompositionLocalProvider(
         LocalNavController provides navController
     ) {
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
                 topAppBar()
             },
@@ -69,7 +76,10 @@ fun Navigation() {
                     HistoryScreen(setTopAppBar = setTopAppBar)
                 }
                 composable<Router.Profile> {
-                    ProfileScreen(setTopAppBar = setTopAppBar)
+                    ProfileScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior
+                    )
                 }
             }
         }

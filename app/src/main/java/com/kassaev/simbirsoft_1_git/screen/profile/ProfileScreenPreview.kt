@@ -16,12 +16,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -43,12 +45,14 @@ import com.kassaev.simbirsoft_1_git.ui.theme.Melon
 import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreenPreview(
     setTopAppBar: (@Composable (() -> Unit)) -> Unit,
     switchState: () -> Unit,
     profile: Profile,
-    switchPush: () -> Unit
+    switchPush: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
     LaunchedEffect(Unit) {
         setTopAppBar {
@@ -65,7 +69,8 @@ fun ProfileScreenPreview(
                             contentDescription = stringResource(R.string.edit_profile)
                         )
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     }

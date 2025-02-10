@@ -1,6 +1,7 @@
 package com.kassaev.simbirsoft_1_git.screen.profile
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,7 +13,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ProfileScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
-    viewModel: ProfileViewModel = koinViewModel()
+    viewModel: ProfileViewModel = koinViewModel(),
+    scrollBehavior: TopAppBarScrollBehavior
 ) {
 
     val state by viewModel.getStateFlow().collectAsStateWithLifecycle()
@@ -35,7 +37,8 @@ fun ProfileScreen(
                 setTopAppBar = setTopAppBar,
                 switchState = switchState,
                 profile = profile,
-                switchPush = switchPush
+                switchPush = switchPush,
+                scrollBehavior = scrollBehavior
             )
         }
     }

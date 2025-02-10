@@ -1,5 +1,6 @@
 package com.kassaev.simbirsoft_1_git.screen.profile
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -11,6 +12,7 @@ import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.model.Profile
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreenEdit(
     setTopAppBar: (@Composable (() -> Unit)) -> Unit,
