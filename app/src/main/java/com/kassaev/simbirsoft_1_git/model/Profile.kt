@@ -9,5 +9,6 @@ data class Profile(
     val birthDate: String,
     val occupation: String,
     val isPushEnabled: Boolean,
+    val password: String,
     val friendList: List<Friend>
 )

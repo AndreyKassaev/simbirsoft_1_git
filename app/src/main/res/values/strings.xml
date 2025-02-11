@@ -16,4 +16,16 @@
     <string name="your_friends">Your friends</string>
     <string name="logout">Logout</string>
     <string name="friend">Friend</string>
+    <string name="edit">Edit</string>
+    <string name="change_photo">Change photo</string>
+    <string name="firstName">First name</string>
+    <string name="middleName">Middle name</string>
+    <string name="lastName">Last name</string>
+    <string name="occupation_ext">Fill in your occupation to be most effective</string>
+    <string name="password">Password</string>
+    <string name="calendar">Calendar</string>
+    <string name="show_password">Show password</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="hide_password">Hide password</string>
 </resources>

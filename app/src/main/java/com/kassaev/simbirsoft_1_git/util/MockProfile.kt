@@ -13,6 +13,7 @@ fun getMockProfile() =
         birthDate = "01 января 1970",
         occupation = "Computer science",
         isPushEnabled = true,
+        password = "SeCreTTT!",
         friendList = List(10) {
             getMockFriend()
         }

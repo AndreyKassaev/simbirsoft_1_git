@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel: ViewModel() {
 
-    private val stateMutable = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Preview)
+    private val stateMutable = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Edit)
     private val state: StateFlow<ProfileScreenState> = stateMutable
 
     private val profileMutable = MutableStateFlow<Profile>(getMockProfile())
@@ -21,6 +21,56 @@ class ProfileViewModel: ViewModel() {
     fun getStateFlow() = state
 
     fun getProfileFlow() = profile
+
+    fun setFirstName(firstName: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    firstName = firstName
+                )
+            }
+        }
+    }
+
+    fun setLastName(lastName: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    lastName = lastName
+                )
+            }
+        }
+    }
+
+    fun setBirthDate(birthDate: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    birthDate = birthDate
+                )
+            }
+        }
+    }
+
+    fun setOccupation(occupation: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    occupation = occupation
+                )
+            }
+        }
+    }
+
+    fun setPassword(password: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    password = password
+                )
+            }
+        }
+    }
 
     fun switchState(){
         viewModelScope.launch {
