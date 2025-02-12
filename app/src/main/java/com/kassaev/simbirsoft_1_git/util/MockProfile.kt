@@ -1,6 +1,5 @@
 package com.kassaev.simbirsoft_1_git.util
 
-import com.kassaev.simbirsoft_1_git.model.Friend
 import com.kassaev.simbirsoft_1_git.model.Profile
 
 fun getMockProfile() =

@@ -1,8 +1,8 @@
 package com.kassaev.simbirsoft_1_git.screen.profile
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -36,12 +37,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.DatePicker
+import com.kassaev.simbirsoft_1_git.UiKit.ProfileDialog
 import com.kassaev.simbirsoft_1_git.UiKit.TextField
 import com.kassaev.simbirsoft_1_git.UiKit.TextFieldPassword
 import com.kassaev.simbirsoft_1_git.model.Profile
+import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.DialogDivider
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
+import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -56,7 +64,11 @@ fun ProfileScreenEdit(
     setBirthDate: (String) -> Unit,
     setOccupation: (String) -> Unit,
     setPassword: (String) -> Unit,
+    setPhoto: (String?) -> Unit,
 ) {
+    var (isDialogOpen, setIsDialogOpen) = remember {
+        mutableStateOf(false)
+    }
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -92,6 +104,12 @@ fun ProfileScreenEdit(
         mutableStateOf(0.dp)
     }
     Column {
+        if (isDialogOpen) {
+            ProfileDialog(
+                setIsDialogOpen = setIsDialogOpen,
+                setPhoto = setPhoto
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -102,15 +120,21 @@ fun ProfileScreenEdit(
             BoxWithConstraints(
                 modifier = Modifier
                     .weight(4f)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable {
+                        setIsDialogOpen(true)
+                    },
                 contentAlignment = Alignment.BottomCenter
             ) {
                 val textHorizontalPadding = minWidth / 3
                 rowHeight = minWidth
-                Image(
-                    painter = painterResource(id = R.drawable.profile), // Replace with your image resource
+                AsyncImage(
+                    modifier = Modifier
+                        .aspectRatio(1F),
+                    model = profile.imageUrl,
                     contentDescription = stringResource(R.string.profile_image),
-                    modifier = Modifier.aspectRatio(1F),
+                    placeholder = painterResource(R.drawable.profile),
+                    error = painterResource(R.drawable.profile),
                     contentScale = ContentScale.Crop
                 )
                 Box(

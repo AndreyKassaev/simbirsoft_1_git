@@ -72,6 +72,16 @@ class ProfileViewModel: ViewModel() {
         }
     }
 
+    fun setPhoto(imageUrl: String?) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    imageUrl = imageUrl
+                )
+            }
+        }
+    }
+
     fun switchState(){
         viewModelScope.launch {
             stateMutable.update { state ->

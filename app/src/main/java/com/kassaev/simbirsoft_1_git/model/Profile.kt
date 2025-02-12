@@ -2,7 +2,7 @@ package com.kassaev.simbirsoft_1_git.model
 
 data class Profile(
     val id: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val firstName: String,
     val middleName: String,
     val lastName: String,

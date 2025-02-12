@@ -28,4 +28,8 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="hide_password">Hide password</string>
+    <string name="choose_photo">Choose photo</string>
+    <string name="make_photo">Make photo</string>
+    <string name="delete">Delete</string>
+    <string name="choose_avatar">Choose avatar</string>
 </resources>

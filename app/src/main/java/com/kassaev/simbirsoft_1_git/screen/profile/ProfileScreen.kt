@@ -31,6 +31,7 @@ fun ProfileScreen(
                 setBirthDate = viewModel::setBirthDate,
                 setOccupation = viewModel::setOccupation,
                 setPassword = viewModel::setPassword,
+                setPhoto = viewModel::setPhoto
             )
         }
 
