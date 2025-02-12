@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Хочу помочь</string>
+    <string name="loading">Загрузка...</string>
+    <string name="news">Новости</string>
+    <string name="search">Поиск</string>
+    <string name="help">Помочь</string>
+    <string name="history">История</string>
+    <string name="profile">Профиль</string>
+    <string name="edit_profile">Редактировать профиль</string>
+    <string name="cancel_edit_profile">Отменить редактирование профиля</string>
+    <string name="save_edit_profile">Сохранить изменения профиля</string>
+    <string name="profile_image">Изображение профиля</string>
+    <string name="birth_date">Дата рождения</string>
+    <string name="occupation">Сфера деятельности</string>
+    <string name="enable_push">"Получать push-уведомления "</string>
+    <string name="your_friends">Ваши друзья</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="friend">Друг</string>
+</resources>
