@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,7 +36,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.DatePicker
@@ -45,11 +43,7 @@ import com.kassaev.simbirsoft_1_git.UiKit.ProfileDialog
 import com.kassaev.simbirsoft_1_git.UiKit.TextField
 import com.kassaev.simbirsoft_1_git.UiKit.TextFieldPassword
 import com.kassaev.simbirsoft_1_git.model.Profile
-import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
-import com.kassaev.simbirsoft_1_git.ui.theme.DialogDivider
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
-import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
-import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
