@@ -40,4 +40,10 @@
     <string name="senior">Пожилые</string>
     <string name="animal">Животные</string>
     <string name="event">Мероприятия</string>
+    <string name="by_event">По мероприятиям</string>
+    <string name="by_npo">По НКО</string>
+    <string name="search_placeholder_event">Введите название мероприятия</string>
+    <string name="search_placeholder_npo">Введите название организации</string>
+    <string name="keywords">Ключевые слова</string>
+    <string name="search_results">Результаты поиска</string>
 </resources>

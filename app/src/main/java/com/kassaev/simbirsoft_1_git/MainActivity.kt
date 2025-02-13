@@ -23,21 +23,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentCompose()
-//        setContentView(R.layout.activity_launcher)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
-//        val runnable = Runnable {
-//            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), null)
-//            setContentCompose()
-//        }
-//        onBackPressedDispatcher.addCallback(this) {
-//            handler.removeCallbacksAndMessages(runnable)
-//            finish()
-//        }
-//        handler.postDelayed(runnable, SPLASH_SCREEN_DELAY)
+        setContentView(R.layout.activity_launcher)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        val runnable = Runnable {
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), null)
+            setContentCompose()
+        }
+        onBackPressedDispatcher.addCallback(this) {
+            handler.removeCallbacksAndMessages(runnable)
+            finish()
+        }
+        handler.postDelayed(runnable, SPLASH_SCREEN_DELAY)
     }
 
     private fun setContentCompose() {

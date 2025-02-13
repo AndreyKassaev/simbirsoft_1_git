@@ -39,4 +39,10 @@
     <string name="senior">Senior</string>
     <string name="animal">Animal</string>
     <string name="event">Event</string>
+    <string name="by_event">By event</string>
+    <string name="by_npo">By NPO</string>
+    <string name="search_placeholder_event">Enter event name</string>
+    <string name="search_placeholder_npo">Enter organization name</string>
+    <string name="keywords">Keywords</string>
+    <string name="search_results">Search results</string>
 </resources>
