@@ -1,6 +1,5 @@
 package com.kassaev.simbirsoft_1_git.util
 
-import com.kassaev.simbirsoft_1_git.model.Friend
 import com.kassaev.simbirsoft_1_git.model.Profile
 
 fun getMockProfile() =
@@ -13,6 +12,7 @@ fun getMockProfile() =
         birthDate = "01 января 1970",
         occupation = "Computer science",
         isPushEnabled = true,
+        password = "SeCreTTT!",
         friendList = List(10) {
             getMockFriend()
         }

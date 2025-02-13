@@ -22,6 +22,66 @@ class ProfileViewModel: ViewModel() {
 
     fun getProfileFlow() = profile
 
+    fun setFirstName(firstName: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    firstName = firstName
+                )
+            }
+        }
+    }
+
+    fun setLastName(lastName: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    lastName = lastName
+                )
+            }
+        }
+    }
+
+    fun setBirthDate(birthDate: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    birthDate = birthDate
+                )
+            }
+        }
+    }
+
+    fun setOccupation(occupation: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    occupation = occupation
+                )
+            }
+        }
+    }
+
+    fun setPassword(password: String) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    password = password
+                )
+            }
+        }
+    }
+
+    fun setPhoto(imageUrl: String?) {
+        viewModelScope.launch {
+            profileMutable.update { profile ->
+                profile.copy(
+                    imageUrl = imageUrl
+                )
+            }
+        }
+    }
+
     fun switchState(){
         viewModelScope.launch {
             stateMutable.update { state ->

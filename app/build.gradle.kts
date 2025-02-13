@@ -83,4 +83,6 @@ dependencies {
     //Coil
     //https://coil-kt.github.io/coil/compose/
     implementation(libs.coil.compose)
+    //By default, Coil 3.x does not include support for loading images from the network.
+    implementation(libs.coil.network.okhttp)
 }

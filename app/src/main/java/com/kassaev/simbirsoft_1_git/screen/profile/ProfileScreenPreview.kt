@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.model.Friend
 import com.kassaev.simbirsoft_1_git.model.Profile
@@ -166,12 +167,14 @@ private fun ProfileFriendList(friendList: List<Friend>) {
 }
 
 @Composable
-private fun ProfileImage(imageUrl: String) {
-    Image(
+private fun ProfileImage(imageUrl: String?) {
+    AsyncImage(
         modifier = Modifier
-            .fillMaxWidth(),
-        painter = painterResource(R.drawable.profile),
+            .height(300.dp),
+        model = imageUrl,
         contentDescription = stringResource(R.string.profile_image),
+        placeholder = painterResource(R.drawable.profile),
+        error = painterResource(R.drawable.profile),
         contentScale = ContentScale.Crop
     )
 }
