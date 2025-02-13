@@ -61,7 +61,7 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Profile
+                startDestination = Router.Help
             ) {
                 composable<Router.News> {
                     NewsScreen(setTopAppBar = setTopAppBar)

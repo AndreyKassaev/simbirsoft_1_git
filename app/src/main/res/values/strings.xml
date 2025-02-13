@@ -33,4 +33,10 @@
     <string name="delete">Delete</string>
     <string name="choose_avatar">Choose avatar</string>
     <string name="oops">Oops...</string>
+    <string name="select_help_category">Select a help category</string>
+    <string name="young">Young</string>
+    <string name="adult">Adult</string>
+    <string name="senior">Senior</string>
+    <string name="animal">Animal</string>
+    <string name="event">Event</string>
 </resources>

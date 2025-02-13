@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel: ViewModel() {
 
-    private val stateMutable = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Edit)
+    private val stateMutable = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Preview)
     private val state: StateFlow<ProfileScreenState> = stateMutable
 
     private val profileMutable = MutableStateFlow<Profile>(getMockProfile())

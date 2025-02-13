@@ -34,4 +34,10 @@
     <string name="delete">Удалить</string>
     <string name="choose_avatar">Выбрать аватар</string>
     <string name="oops">Уупс...</string>
+    <string name="select_help_category">Выберите категорию помощи</string>
+    <string name="young">Дети</string>
+    <string name="adult">Взрослые</string>
+    <string name="senior">Пожилые</string>
+    <string name="animal">Животные</string>
+    <string name="event">Мероприятия</string>
 </resources>
