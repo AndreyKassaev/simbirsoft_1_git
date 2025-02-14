@@ -19,25 +19,28 @@ fun ProfileScreen(
 
     val state by viewModel.getStateFlow().collectAsStateWithLifecycle()
     val profile by viewModel.getProfileFlow().collectAsStateWithLifecycle()
-    val switchState = viewModel::switchState
-    val switchPush = viewModel::switchPush
 
     when (state) {
         ProfileScreenState.Edit -> {
             ProfileScreenEdit(
                 setTopAppBar = setTopAppBar,
-                switchState = switchState,
+                switchState = viewModel::switchState,
                 profile = profile,
-                switchPush = switchPush
+                setFirstName = viewModel::setFirstName,
+                setLastName = viewModel::setLastName,
+                setBirthDate = viewModel::setBirthDate,
+                setOccupation = viewModel::setOccupation,
+                setPassword = viewModel::setPassword,
+                setPhoto = viewModel::setPhoto
             )
         }
 
         ProfileScreenState.Preview -> {
             ProfileScreenPreview(
                 setTopAppBar = setTopAppBar,
-                switchState = switchState,
+                switchState = viewModel::switchState,
                 profile = profile,
-                switchPush = switchPush,
+                switchPush = viewModel::switchPush,
                 scrollBehavior = scrollBehavior
             )
         }
