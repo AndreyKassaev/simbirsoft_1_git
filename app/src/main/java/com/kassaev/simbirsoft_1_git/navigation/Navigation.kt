@@ -41,7 +41,7 @@ fun Navigation() {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     CompositionLocalProvider(
-        LocalNavController provides navController
+        LocalNavController provides navController,
     ) {
         Scaffold(
             modifier = Modifier
@@ -61,19 +61,31 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Help
+                startDestination = Router.Search
             ) {
                 composable<Router.News> {
-                    NewsScreen(setTopAppBar = setTopAppBar)
+                    NewsScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior,
+                    )
                 }
                 composable<Router.Search> {
-                    SearchScreen(setTopAppBar = setTopAppBar)
+                    SearchScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior,
+                    )
                 }
                 composable<Router.Help> {
-                    HelpScreen(setTopAppBar = setTopAppBar)
+                    HelpScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior,
+                    )
                 }
                 composable<Router.History> {
-                    HistoryScreen(setTopAppBar = setTopAppBar)
+                    HistoryScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior
+                    )
                 }
                 composable<Router.Profile> {
                     ProfileScreen(

@@ -41,8 +41,9 @@ import java.util.Locale
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun EventCard(event: Event) {
-    BoxWithConstraints(
+    Box(
         modifier = Modifier
+            .height(300.dp)
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(4.dp))
     ) {
@@ -59,7 +60,7 @@ fun EventCard(event: Event) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(maxHeight / 2) // Adjust height for more/less blur
+                .height(150.dp) // Adjust height for more/less blur
                 .align(Alignment.BottomCenter)
                 .blur(16.dp) // Apply blur effect
                 .background(
