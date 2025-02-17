@@ -1,7 +1,6 @@
 package com.kassaev.simbirsoft_1_git.util
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.kassaev.simbirsoft_1_git.R
 
 data class Event(
     val id: String,
