@@ -5,7 +5,10 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -58,6 +61,13 @@ fun ProfileDialog(
             }
         }
     )
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = PickVisualMedia(),
+        onResult = { uri: Uri? ->
+            setPhoto(uri.toString())
+            setIsDialogOpen(false)
+        }
+    )
     val permissions = mutableListOf(
         Manifest.permission.CAMERA,
     )
@@ -108,8 +118,9 @@ fun ProfileDialog(
                 Text(
                     modifier = Modifier
                         .clickable {
-                            setIsDialogOpen(false)
-                            //                                choosePhoto()
+                            photoPickerLauncher.launch(
+                                PickVisualMediaRequest(ImageOnly)
+                            )
                         }
                         .fillMaxWidth()
                         .padding(12.dp),
