@@ -14,7 +14,7 @@ import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun GetTopAppBar(
-    @StringRes title: Int,
+    title: String,
     actions: @Composable () -> Unit = {},
     navigationIcon: @Composable () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior? = null
@@ -22,7 +22,7 @@ fun GetTopAppBar(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(title)
+                text = title
             )
         },
         actions = {

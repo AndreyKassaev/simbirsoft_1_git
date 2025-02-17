@@ -3,6 +3,7 @@ package com.kassaev.simbirsoft_1_git.UiKit
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -29,11 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
+import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
+import com.kassaev.simbirsoft_1_git.navigation.Router
 import com.kassaev.simbirsoft_1_git.ui.theme.BlueGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.DarkSlateBlue
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.Event
+import com.kassaev.simbirsoft_1_git.util.timestamFormatter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -41,11 +45,17 @@ import java.util.Locale
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun EventCard(event: Event) {
+    val navController = LocalNavController.current
     Box(
         modifier = Modifier
             .height(300.dp)
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(4.dp))
+            .clickable{
+                navController.navigate(
+                    Router.EventDetail(eventId = event.id)
+                )
+            }
     ) {
         AsyncImage(
             model = event.imageUrl,
@@ -118,10 +128,7 @@ fun EventCard(event: Event) {
                         .padding(end = 8.dp)
                 )
                 Text(
-                    text = SimpleDateFormat(
-                        "dd MMMM yyyy",
-                        Locale("ru")
-                    ).format(Date(event.timestamp)),
+                    text = timestamFormatter(event.timestamp),
                     color = White,
                     fontSize = 17.sp
                 )

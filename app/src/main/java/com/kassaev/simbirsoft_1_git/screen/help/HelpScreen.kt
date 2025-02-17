@@ -54,7 +54,7 @@ fun HelpScreen(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.help,
+                title = stringResource(R.string.help),
                 scrollBehavior = scrollBehavior,
             )
         }
