@@ -58,7 +58,7 @@ fun ProfileScreenPreview(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.profile,
+                title = stringResource(R.string.profile),
                 actions = {
                     IconButton(
                         onClick = {

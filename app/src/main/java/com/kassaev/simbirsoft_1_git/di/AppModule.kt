@@ -1,5 +1,6 @@
 package com.kassaev.simbirsoft_1_git.di
 
+import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailViewModel
 import com.kassaev.simbirsoft_1_git.screen.help.HelpViewModel
 import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileViewModel
@@ -12,4 +13,5 @@ val appModule = module{
     viewModelOf(::HelpViewModel)
     viewModelOf(::SearchViewModel)
     viewModelOf(::NewsViewModel)
+    viewModelOf(::EventDetailViewModel)
 }

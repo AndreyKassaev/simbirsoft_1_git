@@ -68,7 +68,7 @@ fun ProfileScreenEdit(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.edit,
+                title = stringResource(R.string.edit),
                 actions = {
                     IconButton(
                         onClick = {

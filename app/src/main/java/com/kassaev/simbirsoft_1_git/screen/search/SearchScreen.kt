@@ -62,7 +62,7 @@ fun SearchScreen(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.search,
+                title = stringResource(R.string.search),
                 scrollBehavior = scrollBehavior,
             )
         }

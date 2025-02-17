@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.res.stringResource
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 
@@ -17,7 +18,7 @@ fun HistoryScreen(
     LaunchedEffect(Unit) {
         setTopAppBar{
             GetTopAppBar(
-                title = R.string.history,
+                title = stringResource(R.string.history),
                 scrollBehavior = scrollBehavior,
             )
         }

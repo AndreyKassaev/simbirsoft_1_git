@@ -14,5 +14,9 @@ sealed class Router{
     data object History: Router()
     @Serializable
     data object Profile: Router()
+    @Serializable
+    data class EventDetail(
+        val eventId: String? = null
+    ): Router()
 }
 

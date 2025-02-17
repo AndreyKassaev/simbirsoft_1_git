@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.Melon
 
@@ -31,26 +32,33 @@ fun FAB() {
     val isCurrent = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute(Router.Help::class)
     } == true
+    val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
+        NavDestination.hasRoute<EventDetail>()
+    } == true
 
-    SmallFloatingActionButton(
-        modifier = Modifier
-            .offset(y = (52).dp)
-            .clip(CircleShape)
-            .background(Color.White)
-            .padding(2.dp),
-        onClick = {
-            navController.navigate(Router.Help) {
-                launchSingleTop = true
-                popUpTo(Router.Help) { inclusive = true }
-            }
-        },
-        shape = CircleShape,
-        containerColor = if (isCurrent) Leaf else Melon
-    ) {
-        Icon(
-            painter = painterResource(R.drawable.favorite),
-            contentDescription = "Add",
-            tint = Color.Unspecified
-        )
+    if (isEventDetail) {
+        {}
+    } else {
+        SmallFloatingActionButton(
+            modifier = Modifier
+                .offset(y = (52).dp)
+                .clip(CircleShape)
+                .background(Color.White)
+                .padding(2.dp),
+            onClick = {
+                navController.navigate(Router.Help) {
+                    launchSingleTop = true
+                    popUpTo(Router.Help) { inclusive = true }
+                }
+            },
+            shape = CircleShape,
+            containerColor = if (isCurrent) Leaf else Melon
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.favorite),
+                contentDescription = "Add",
+                tint = Color.Unspecified
+            )
+        }
     }
 }

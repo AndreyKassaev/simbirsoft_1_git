@@ -20,6 +20,7 @@ import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.util.BottomBarItem
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
 
 @Composable
 fun BottomBar() {
@@ -27,7 +28,9 @@ fun BottomBar() {
     val navController = LocalNavController.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
+    val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
+        NavDestination.hasRoute<EventDetail>()
+    } == true
     val bottomItemList = listOf(
         BottomBarItem(
             icon = R.drawable.list,
@@ -55,31 +58,35 @@ fun BottomBar() {
             route = Router.Profile,
         ),
     )
-    Column {
-        HorizontalDivider(modifier = Modifier.height(1.dp))
-        Row(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .fillMaxWidth()
-                .background(Color.White),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            bottomItemList.forEachIndexed { index, bottomItem ->
-                val isCurrent = currentDestination?.hierarchy?.any { NavDestination ->
-                    NavDestination.hasRoute(bottomItem.route::class)
-                } == true
-                BottomBarItemView(
-                    icon = bottomItem.icon,
-                    title = bottomItem.title,
-                    modifier = Modifier.weight(1F),
-                    isSelected = isCurrent,
-                    onClick = {
-                        navController.navigate(bottomItem.route) {
-                            launchSingleTop = true
-                            popUpTo(bottomItem.route) { inclusive = true }
+    if (isEventDetail) {
+        {}
+    } else {
+        Column {
+            HorizontalDivider(modifier = Modifier.height(1.dp))
+            Row(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .fillMaxWidth()
+                    .background(Color.White),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                bottomItemList.forEachIndexed { index, bottomItem ->
+                    val isCurrent = currentDestination?.hierarchy?.any { NavDestination ->
+                        NavDestination.hasRoute(bottomItem.route::class)
+                    } == true
+                    BottomBarItemView(
+                        icon = bottomItem.icon,
+                        title = bottomItem.title,
+                        modifier = Modifier.weight(1F),
+                        isSelected = isCurrent,
+                        onClick = {
+                            navController.navigate(bottomItem.route) {
+                                launchSingleTop = true
+                                popUpTo(bottomItem.route) { inclusive = true }
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

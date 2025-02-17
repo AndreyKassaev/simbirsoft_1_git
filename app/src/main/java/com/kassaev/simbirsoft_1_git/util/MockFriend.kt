@@ -8,5 +8,5 @@ fun getMockFriend() =
         firstName = "Имя",
         middleName = "Отчество",
         lastName = "Фамилия",
-        imageUrl = ""
+        imageUrl = "https://kassaev.com/media/android_11.png"
     )

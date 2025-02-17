@@ -56,7 +56,7 @@ fun NewsScreen(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = if (isFilterOpen) R.string.filter else R.string.news,
+                title = if (isFilterOpen) stringResource(R.string.filter) else stringResource(R.string.news),
                 scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(
