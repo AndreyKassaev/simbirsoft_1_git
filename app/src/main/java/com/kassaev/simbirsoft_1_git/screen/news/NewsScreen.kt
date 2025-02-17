@@ -1,19 +1,43 @@
 package com.kassaev.simbirsoft_1_git.screen.news
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.EventCard
+import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
+import com.kassaev.simbirsoft_1_git.ui.theme.LightGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.Melon
+import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import org.koin.androidx.compose.koinViewModel
 
@@ -25,21 +49,121 @@ fun NewsScreen(
     viewModel: NewsViewModel = koinViewModel(),
 ) {
     val newsList by viewModel.getNewsListFlow().collectAsStateWithLifecycle()
+    val filterState by viewModel.getFilterSwitchStateFlow().collectAsStateWithLifecycle()
+    var isFilterOpen by remember {
+        mutableStateOf(false)
+    }
     LaunchedEffect(Unit) {
-        setTopAppBar{
+        setTopAppBar {
             GetTopAppBar(
-                title = R.string.news,
-                scrollBehavior = scrollBehavior
+                title = if (isFilterOpen) R.string.filter else R.string.news,
+                scrollBehavior = scrollBehavior,
+                actions = {
+                    IconButton(
+                        onClick = {
+                            isFilterOpen = !isFilterOpen
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(if (isFilterOpen) R.drawable.check_circle else R.drawable.filter),
+                            contentDescription = stringResource(R.string.filter)
+                        )
+                    }
+                },
+                navigationIcon = if (isFilterOpen) {
+                    {
+                        IconButton(
+                            onClick = {
+                                isFilterOpen = !isFilterOpen
+                            }
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.arrow_back),
+                                contentDescription = stringResource(R.string.back)
+                            )
+                        }
+                    }
+                } else {
+                    {}
+                }
             )
         }
     }
-    LazyColumn(
-        modifier = Modifier
-            .padding(top = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(newsList) { news ->
-            EventCard(event = news)
+    if (isFilterOpen) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(LightGrey)
+        ) {
+            Text(
+                text = stringResource(R.string.how_to_help),
+                fontSize = 17.sp,
+                color = CharcoalGrey,
+                modifier = Modifier
+                    .padding(16.dp)
+            )
+            Row(
+                modifier = Modifier
+                    .background(White)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.money),
+                    fontSize = 17.sp
+                )
+                Switch(
+                    checked = filterState.money,
+                    onCheckedChange = {
+                        viewModel.setFilterSwitchMoneyState(it)
+                    },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp),
+                    colors = SwitchDefaults.colors(
+                        checkedTrackColor = Leaf,
+                        uncheckedTrackColor = Melon,
+                        uncheckedThumbColor = White,
+                    )
+                )
+            }
+            HorizontalDivider(color = DividerGrey)
+            Row(
+                modifier = Modifier
+                    .background(White)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.stuff),
+                    fontSize = 17.sp
+                )
+                Switch(
+                    checked = filterState.stuff,
+                    onCheckedChange = {
+                        viewModel.setFilterSwitchStuffState(it)
+                    },
+                    modifier = Modifier
+                        .padding(vertical = 8.dp),
+                    colors = SwitchDefaults.colors(
+                        checkedTrackColor = Leaf,
+                        uncheckedTrackColor = Melon,
+                        uncheckedThumbColor = White,
+                    )
+                )
+            }
+        }
+    } else {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item {} //Space between topAppBar and first item
+            items(newsList) { news ->
+                EventCard(event = news)
+            }
         }
     }
 }
