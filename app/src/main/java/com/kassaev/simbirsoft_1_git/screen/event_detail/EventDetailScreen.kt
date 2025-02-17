@@ -171,7 +171,7 @@ fun EventDetailScreen(
                             )
                         }
                         Text(
-                            text = "+${event.people.size - 3}",
+                            text = if((event.people.size - 3) > 0) "+${event.people.size - 3}" else "",
                             color = CharcoalGrey,
                             fontSize = 13.sp,
                             modifier = Modifier

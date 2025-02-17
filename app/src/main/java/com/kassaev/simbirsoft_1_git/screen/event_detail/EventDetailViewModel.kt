@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.repository.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EventDetailViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val eventRepository: EventRepository
 ): ViewModel() {
 
     private val eventMutable = MutableStateFlow<Event?>(null)
@@ -23,7 +25,7 @@ class EventDetailViewModel(
         eventId?.let { id ->
             viewModelScope.launch {
                 eventMutable.update {
-                    getEventById(eventId = id)
+                    getEventById(id = id)
                 }
             }
         }
@@ -31,6 +33,6 @@ class EventDetailViewModel(
 
     fun getEventFlow() = event
 
-    private fun getEventById(eventId: String) = Event.default
+    private fun getEventById(id: String) = eventRepository.getEventById(id = id)
 
 }

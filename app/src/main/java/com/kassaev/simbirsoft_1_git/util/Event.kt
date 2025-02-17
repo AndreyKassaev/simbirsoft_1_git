@@ -2,7 +2,9 @@ package com.kassaev.simbirsoft_1_git.util
 
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import com.kassaev.simbirsoft_1_git.model.Friend
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Event(
     val id: String,
     val imageUrl: String,

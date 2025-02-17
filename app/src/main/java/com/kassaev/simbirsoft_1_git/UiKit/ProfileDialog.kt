@@ -64,7 +64,9 @@ fun ProfileDialog(
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = PickVisualMedia(),
         onResult = { uri: Uri? ->
-            setPhoto(uri.toString())
+            uri?.let {
+                setPhoto(uri.toString())
+            }
             setIsDialogOpen(false)
         }
     )
