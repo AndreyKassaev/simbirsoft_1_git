@@ -46,4 +46,5 @@
     <string name="search_placeholder_npo">Введите название организации</string>
     <string name="keywords">Ключевые слова</string>
     <string name="search_results">Результаты поиска</string>
+    <string name="npo">НКО</string>
 </resources>
