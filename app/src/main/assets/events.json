@@ -21,6 +21,16 @@
         "lastName": "Фамилия",
         "imageUrl": "https://kassaev.com/media/android_11.png"
       }
+    ],
+    "categoryList": [
+      {
+        "title": "Young",
+        "imageUrl": "https://kassaev.com/media/young.png"
+      },
+      {
+        "title": "Мероприятия",
+        "imageUrl": "https://kassaev.com/media/event.png"
+      }
     ]
   },
   {
@@ -33,7 +43,7 @@
     "people": [
       {
         "id": "UUID-0002",
-        "firstName": "Имя",
+        "firstName": "Дети",
         "middleName": "Отчество",
         "lastName": "Фамилия",
         "imageUrl": "https://kassaev.com/media/android_11.png"
@@ -44,6 +54,16 @@
         "middleName": "Отчество",
         "lastName": "Фамилия",
         "imageUrl": "https://kassaev.com/media/android_11.png"
+      }
+    ],
+    "categoryList": [
+      {
+        "title": "Взрослые",
+        "imageUrl": "https://kassaev.com/media/adult.png"
+      },
+      {
+        "title": "Мероприятия",
+        "imageUrl": "https://kassaev.com/media/event.png"
       }
     ]
   }

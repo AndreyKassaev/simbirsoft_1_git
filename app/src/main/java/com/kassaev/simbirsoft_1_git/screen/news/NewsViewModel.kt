@@ -1,9 +1,8 @@
 package com.kassaev.simbirsoft_1_git.screen.news
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kassaev.simbirsoft_1_git.repository.EventRepository
+import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
 import kotlinx.coroutines.flow.MutableStateFlow
