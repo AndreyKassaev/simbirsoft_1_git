@@ -12,14 +12,14 @@ import com.kassaev.simbirsoft_1_git.screen.search.SearchViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.module
 import org.koin.dsl.bind
+import org.koin.dsl.module
 
 val appModule = module{
     viewModelOf(::ProfileViewModel)
-    viewModelOf(::HelpViewModel)
+    single { HelpViewModel(get()) }
     viewModelOf(::SearchViewModel)
-    viewModelOf(::NewsViewModel)
+    single { NewsViewModel(get(), get()) }
     viewModelOf(::EventDetailViewModel)
     single { androidContext().assets }
     singleOf(::EventRepositoryImpl) bind EventRepository::class

@@ -1,6 +1,12 @@
 package com.kassaev.simbirsoft_1_git.screen.help
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -82,13 +89,27 @@ fun HelpScreen(
 
 @Composable
 fun HelpScreenLoading() {
+    val infiniteTransition = rememberInfiniteTransition(label = "rotation")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ), label = "rotate"
+    )
+
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(White),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator(
-            color = Leaf
+        AsyncImage(
+            modifier = Modifier
+                .rotate(rotation),
+            model = "https://kassaev.com/media/pepe_sitting.gif",
+            contentDescription = null,
         )
     }
 }
@@ -120,7 +141,6 @@ fun HelpScreenSuccess(
     var gridHeight by remember {
         mutableStateOf(0.dp)
     }
-    println("gridHeight:$gridHeight")
     Column {
         Text(
             modifier = Modifier
