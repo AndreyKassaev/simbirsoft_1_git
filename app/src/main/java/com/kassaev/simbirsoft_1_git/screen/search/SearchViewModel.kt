@@ -2,7 +2,7 @@ package com.kassaev.simbirsoft_1_git.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kassaev.simbirsoft_1_git.repository.EventRepository
+import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.Npo
 import kotlinx.coroutines.flow.MutableStateFlow

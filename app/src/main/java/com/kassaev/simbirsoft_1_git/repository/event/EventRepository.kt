@@ -1,4 +1,4 @@
-package com.kassaev.simbirsoft_1_git.repository
+package com.kassaev.simbirsoft_1_git.repository.event
 
 import com.kassaev.simbirsoft_1_git.util.Event
 

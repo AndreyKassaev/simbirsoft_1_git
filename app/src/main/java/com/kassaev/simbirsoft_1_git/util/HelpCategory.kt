@@ -1,9 +1,9 @@
 package com.kassaev.simbirsoft_1_git.util
 
-import androidx.annotation.StringRes
-import androidx.annotation.DrawableRes
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class HelpCategory(
-    @StringRes val title: Int,
-    @DrawableRes val image: Int,
+    val title: String,
+    val imageUrl: String,
 )

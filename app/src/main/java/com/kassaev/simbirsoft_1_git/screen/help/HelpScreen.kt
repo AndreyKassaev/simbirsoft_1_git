@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
@@ -92,14 +93,14 @@ fun HelpScreen(
                             if (gridHeight == 0.dp) {
                                  gridHeight = maxWidth
                             }
-                            Image(
-                                painter = painterResource(category.image),
-                                contentDescription = stringResource(category.title),
+                            AsyncImage(
+                                model = category.imageUrl,
+                                contentDescription = category.title,
                                 modifier = Modifier
                                     .align(Alignment.Center)
                             )
                             Text(
-                                text = stringResource(category.title),
+                                text = category.title,
                                 color = Leaf,
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)

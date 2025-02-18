@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Дети",
+    "imageUrl": "https://kassaev.com/media/young.png"
+  },
+  {
+    "title": "Взрослые",
+    "imageUrl": "https://kassaev.com/media/adult.png"
+  },
+  {
+    "title": "Пожилые",
+    "imageUrl": "https://kassaev.com/media/senior.png"
+  },
+  {
+    "title": "Животные",
+    "imageUrl": "https://kassaev.com/media/animal.png"
+  },
+  {
+    "title": "Мероприятия",
+    "imageUrl": "https://kassaev.com/media/event.png"
+  }
+]
