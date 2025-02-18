@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,6 +45,7 @@ private const val GRID_SIZE = 2
 fun HelpScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
     viewModel: HelpViewModel = koinViewModel(),
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     val categoryList = viewModel.getCategoryList()
     var gridHeight by remember {
@@ -52,7 +54,8 @@ fun HelpScreen(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.help,
+                title = stringResource(R.string.help),
+                scrollBehavior = scrollBehavior,
             )
         }
     }

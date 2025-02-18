@@ -46,4 +46,13 @@
     <string name="search_placeholder_npo">Введите название организации</string>
     <string name="keywords">Ключевые слова</string>
     <string name="search_results">Результаты поиска</string>
+    <string name="npo">НКО</string>
+    <string name="filter">Фильтр</string>
+    <string name="back">Назад</string>
+    <string name="how_to_help">Как вы хотите помочь?</string>
+    <string name="money">Деньги</string>
+    <string name="stuff">Вещи</string>
+    <string name="share">Поделиться</string>
+    <string name="download_report">Скачать отчет</string>
+    <string name="visit_organization">Перейти на сайт организации</string>
 </resources>

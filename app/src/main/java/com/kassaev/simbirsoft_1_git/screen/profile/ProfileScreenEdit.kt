@@ -19,6 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -59,6 +60,7 @@ fun ProfileScreenEdit(
     setOccupation: (String) -> Unit,
     setPassword: (String) -> Unit,
     setPhoto: (String?) -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
 ) {
     var (isDialogOpen, setIsDialogOpen) = remember {
         mutableStateOf(false)
@@ -66,7 +68,7 @@ fun ProfileScreenEdit(
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
-                title = R.string.edit,
+                title = stringResource(R.string.edit),
                 actions = {
                     IconButton(
                         onClick = {
@@ -90,7 +92,8 @@ fun ProfileScreenEdit(
                             contentDescription = stringResource(R.string.cancel_edit_profile)
                         )
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     }

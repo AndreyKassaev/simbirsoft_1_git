@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
         setTheme(R.style.Theme_Simbirsoft_1_git)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentCompose()
         setContentView(R.layout.activity_launcher)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

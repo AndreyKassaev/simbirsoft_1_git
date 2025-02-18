@@ -1,0 +1,50 @@
+[
+  {
+    "id": "UUID-0001",
+    "imageUrl": "https://kassaev.com/media/android_14.png",
+    "title": "Событие 1",
+    "description": "Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 ",
+    "timestamp": 1713561600000,
+    "organization": "Организатор 1",
+    "people": [
+      {
+        "id": "UUID-0002",
+        "firstName": "Имя",
+        "middleName": "Отчество",
+        "lastName": "Фамилия",
+        "imageUrl": "https://kassaev.com/media/android_11.png"
+      },
+      {
+        "id": "UUID-0002",
+        "firstName": "Имя",
+        "middleName": "Отчество",
+        "lastName": "Фамилия",
+        "imageUrl": "https://kassaev.com/media/android_11.png"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "imageUrl": "https://kassaev.com/media/android_13.png",
+    "title": "Событие 2",
+    "description": "Событие 2 Событие 2 Событие 2 Событие 2 Событие 2 Событие 2 Событие 2 Событие 2 ",
+    "timestamp": 1713658000000,
+    "organization": "Организатор 2",
+    "people": [
+      {
+        "id": "UUID-0002",
+        "firstName": "Имя",
+        "middleName": "Отчество",
+        "lastName": "Фамилия",
+        "imageUrl": "https://kassaev.com/media/android_11.png"
+      },
+      {
+        "id": "UUID-0002",
+        "firstName": "Имя",
+        "middleName": "Отчество",
+        "lastName": "Фамилия",
+        "imageUrl": "https://kassaev.com/media/android_11.png"
+      }
+    ]
+  }
+]

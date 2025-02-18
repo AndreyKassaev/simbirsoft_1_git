@@ -45,4 +45,13 @@
     <string name="search_placeholder_npo">Enter organization name</string>
     <string name="keywords">Keywords</string>
     <string name="search_results">Search results</string>
+    <string name="npo">NPO</string>
+    <string name="filter">Filter</string>
+    <string name="back">Go Back</string>
+    <string name="how_to_help">How would you like to help?</string>
+    <string name="money">Money</string>
+    <string name="stuff">Stuff</string>
+    <string name="share">Share</string>
+    <string name="download_report">Download report</string>
+    <string name="visit_organization">Visit organization</string>
 </resources>
