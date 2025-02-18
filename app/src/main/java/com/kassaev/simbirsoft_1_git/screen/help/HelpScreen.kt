@@ -1,19 +1,28 @@
 package com.kassaev.simbirsoft_1_git.screen.help
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -25,17 +34,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGreyTwo
+import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
+import com.kassaev.simbirsoft_1_git.util.HelpCategory
 import org.koin.androidx.compose.koinViewModel
 
 private const val GRID_SIZE = 2
@@ -48,10 +62,8 @@ fun HelpScreen(
     viewModel: HelpViewModel = koinViewModel(),
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
-    val categoryList = viewModel.getCategoryList()
-    var gridHeight by remember {
-        mutableStateOf(0.dp)
-    }
+    val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
+
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -59,6 +71,75 @@ fun HelpScreen(
                 scrollBehavior = scrollBehavior,
             )
         }
+    }
+    when(state) {
+        is HelpScreenState.Success -> {
+            HelpScreenSuccess(
+                categoryList = state.data
+            )
+        }
+        is HelpScreenState.Failure -> {
+            HelpScreenFailure()
+        }
+        is HelpScreenState.Loading -> {
+            HelpScreenLoading()
+        }
+    }
+}
+
+@Composable
+fun HelpScreenLoading() {
+    val infiniteTransition = rememberInfiniteTransition(label = "rotation")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ), label = "rotate"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .rotate(rotation),
+            model = "https://kassaev.com/media/pepe_sitting.gif",
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+fun HelpScreenFailure() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            painter = painterResource(R.drawable.sad_pepe),
+            contentDescription = stringResource(R.string.oops),
+            contentScale = ContentScale.FillWidth,
+        )
+    }
+}
+
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@Composable
+fun HelpScreenSuccess(
+    categoryList: List<HelpCategory>,
+) {
+    var gridHeight by remember {
+        mutableStateOf(0.dp)
     }
     Column {
         Text(
@@ -91,7 +172,7 @@ fun HelpScreen(
                                 .background(LightGreyTwo),
                         ) {
                             if (gridHeight == 0.dp) {
-                                 gridHeight = maxWidth
+                                gridHeight = maxWidth
                             }
                             AsyncImage(
                                 model = category.imageUrl,

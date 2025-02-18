@@ -1,7 +1,15 @@
 package com.kassaev.simbirsoft_1_git.screen.news
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,11 +33,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.EventCard
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
@@ -38,6 +49,8 @@ import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Melon
 import com.kassaev.simbirsoft_1_git.ui.theme.White
+import com.kassaev.simbirsoft_1_git.util.Event
+import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,7 +61,7 @@ fun NewsScreen(
     scrollBehavior: TopAppBarScrollBehavior,
     viewModel: NewsViewModel = koinViewModel(),
 ) {
-    val newsList by viewModel.getNewsListFlow().collectAsStateWithLifecycle()
+    val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
     val filterState by viewModel.getFilterSwitchStateFlow().collectAsStateWithLifecycle()
     var isFilterOpen by remember {
         mutableStateOf(false)
@@ -89,6 +102,34 @@ fun NewsScreen(
             )
         }
     }
+    when(state) {
+        is NewsScreenState.Success -> {
+            NewsScreenSuccess(
+                newsList = state.data,
+                setFilterSwitchMoneyState = viewModel::setFilterSwitchMoneyState,
+                setFilterSwitchStuffState = viewModel::setFilterSwitchStuffState,
+                filterState = filterState,
+                isFilterOpen = isFilterOpen
+            )
+        }
+        is NewsScreenState.Failure -> {
+            NewsScreenFailure()
+        }
+        is NewsScreenState.Loading -> {
+            NewsScreenLoading()
+        }
+    }
+
+}
+
+@Composable
+fun NewsScreenSuccess(
+    newsList: List<Event>,
+    setFilterSwitchStuffState: (Boolean) -> Unit,
+    setFilterSwitchMoneyState: (Boolean) -> Unit,
+    filterState: FilterSwitchState,
+    isFilterOpen: Boolean
+) {
     if (isFilterOpen) {
         Column(
             modifier = Modifier
@@ -117,7 +158,7 @@ fun NewsScreen(
                 Switch(
                     checked = filterState.money,
                     onCheckedChange = {
-                        viewModel.setFilterSwitchMoneyState(it)
+                        setFilterSwitchMoneyState(it)
                     },
                     modifier = Modifier
                         .padding(vertical = 8.dp),
@@ -144,7 +185,7 @@ fun NewsScreen(
                 Switch(
                     checked = filterState.stuff,
                     onCheckedChange = {
-                        viewModel.setFilterSwitchStuffState(it)
+                        setFilterSwitchStuffState(it)
                     },
                     modifier = Modifier
                         .padding(vertical = 8.dp),
@@ -165,5 +206,50 @@ fun NewsScreen(
                 EventCard(event = news)
             }
         }
+    }
+}
+
+@Composable
+fun NewsScreenFailure() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            painter = painterResource(R.drawable.sad_pepe),
+            contentDescription = stringResource(R.string.oops),
+            contentScale = ContentScale.FillWidth,
+        )
+    }
+}
+
+@Composable
+fun NewsScreenLoading() {
+    val infiniteTransition = rememberInfiniteTransition(label = "rotation")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ), label = "rotate"
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .rotate(rotation),
+            model = "https://kassaev.com/media/pepe_sitting.gif",
+            contentDescription = null,
+        )
     }
 }
