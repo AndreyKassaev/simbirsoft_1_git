@@ -2,14 +2,18 @@ package com.kassaev.simbirsoft_1_git.screen.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +32,7 @@ import com.kassaev.simbirsoft_1_git.UiKit.SearchField
 import com.kassaev.simbirsoft_1_git.UiKit.SearchResultMeta
 import com.kassaev.simbirsoft_1_git.UiKit.SearchTabRow
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGrey
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
@@ -57,9 +62,7 @@ fun SearchScreen(
         tabList.size
     }
     val searchValue by viewModel.getSearchValueFlow().collectAsStateWithLifecycle()
-    val eventList by viewModel.getEventListFlow().collectAsStateWithLifecycle()
-    val npoList by viewModel.getNpoListFlow().collectAsStateWithLifecycle()
-    val keywordList by viewModel.getKeywordList().collectAsStateWithLifecycle()
+    val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -91,31 +94,55 @@ fun SearchScreen(
             value = searchValue,
             setValue = viewModel::setSearchValue
         )
-        SearchResultMeta(
-            keywordList = keywordList,
-            amount = when(selectedTabIndex) {
-                0 -> "${eventList.size} " + stringResource(R.string.event)
-                1 -> "${npoList.size} " + stringResource(R.string.npo)
-                else -> ""
+        when(state) {
+            is SearchScreenState.Empty -> {
+                Text("empty...")
             }
-        )
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(LightGrey),
-            verticalAlignment = Alignment.Top
-        ) { page ->
-            when (page) {
-                0 -> {
-                    EventList(
-                        eventList = eventList
+            is SearchScreenState.Failure -> {
+                Text("Oooppsss..")
+            }
+            is SearchScreenState.Init -> {
+                Text("Init")
+            }
+            is SearchScreenState.Loading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = Leaf
                     )
                 }
-                1 -> {
-                    NpoList(
-                        npoList = npoList
-                    )
+            }
+            is SearchScreenState.Success -> {
+                SearchResultMeta(
+                    keywordList = state.data.keywordList,
+                    amount = when(selectedTabIndex) {
+                        0 -> "${state.data.eventList.size} " + stringResource(R.string.event)
+                        1 -> "${state.data.npoList.size} " + stringResource(R.string.npo)
+                        else -> ""
+                    }
+                )
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(LightGrey),
+                    verticalAlignment = Alignment.Top
+                ) { page ->
+                    when (page) {
+                        0 -> {
+                            EventList(
+                                eventList = state.data.eventList
+                            )
+                        }
+                        1 -> {
+                            NpoList(
+                                npoList = state.data.npoList
+                            )
+                        }
+                    }
                 }
             }
         }
