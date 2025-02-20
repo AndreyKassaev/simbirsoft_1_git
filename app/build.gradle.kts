@@ -100,5 +100,7 @@ dependencies {
     implementation(libs.rxjava)
     // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxandroid
     implementation(libs.rxandroid)
+    // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime-rxjava3
+    implementation(libs.androidx.runtime.rxjava3)
 
 }

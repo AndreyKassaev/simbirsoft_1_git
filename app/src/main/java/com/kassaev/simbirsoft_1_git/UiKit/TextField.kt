@@ -1,11 +1,12 @@
 package com.kassaev.simbirsoft_1_git.UiKit
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -19,18 +20,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGreyLight
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
+import com.kassaev.simbirsoft_1_git.ui.theme.LightGreyTwo
 
 @Composable
 fun TextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    placeholder: String = "",
 ) {
     val customTextSelectionColors = TextSelectionColors(
         handleColor = Leaf,
@@ -59,13 +63,29 @@ fun TextField(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        innerText()
+                        Box(modifier = Modifier.weight(1f)) {
+                            if (value.isEmpty()) {
+                                Text(
+                                    text = placeholder,
+                                    color = LightGreyTwo,
+                                    fontSize = 20.sp
+                                )
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 6.dp)
+                            ) {
+                                innerText()
+                            }
+                        }
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     HorizontalDivider(
                         modifier = Modifier
                             .height(1.dp),
@@ -75,4 +95,17 @@ fun TextField(
             }
         )
     }
+}
+
+@Preview(
+    showBackground = true
+)
+@Composable
+private fun TextFieldPrev() {
+    TextField(
+        label = "label",
+        value = "",
+        onValueChange = {},
+        placeholder = "placeholder"
+    )
 }

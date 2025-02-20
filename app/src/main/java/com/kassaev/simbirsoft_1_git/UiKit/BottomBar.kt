@@ -20,6 +20,7 @@ import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.util.BottomBarItem
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.navigation.Router.Authorization
 import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
 
 @Composable
@@ -30,6 +31,9 @@ fun BottomBar() {
     val currentDestination = navBackStackEntry?.destination
     val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute<EventDetail>()
+    } == true
+    val isAuthorization = currentDestination?.hierarchy?.any { NavDestination ->
+        NavDestination.hasRoute<Authorization>()
     } == true
     val bottomItemList = listOf(
         BottomBarItem(
@@ -58,7 +62,7 @@ fun BottomBar() {
             route = Router.Profile,
         ),
     )
-    if (isEventDetail) {
+    if (isEventDetail || isAuthorization) {
         {}
     } else {
         Column {

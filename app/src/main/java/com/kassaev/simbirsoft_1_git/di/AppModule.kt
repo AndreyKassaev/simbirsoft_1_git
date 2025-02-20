@@ -4,6 +4,7 @@ import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepository
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepositoryImpl
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepositoryImpl
+import com.kassaev.simbirsoft_1_git.screen.authorization.AuthorizationViewModel
 import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailViewModel
 import com.kassaev.simbirsoft_1_git.screen.help.HelpViewModel
 import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
@@ -24,4 +25,5 @@ val appModule = module{
     single { androidContext().assets }
     singleOf(::EventRepositoryImpl) bind EventRepository::class
     singleOf(::CategoryRepositoryImpl) bind CategoryRepository::class
+    viewModelOf(::AuthorizationViewModel)
 }
