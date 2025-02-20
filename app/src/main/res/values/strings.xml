@@ -66,4 +66,9 @@
     <string name="email">E-mail</string>
     <string name="enter_email">Enter e-mail</string>
     <string name="enter_password">Enter password</string>
+    <string name="search_advice">Type the event name or keywords in the search bar.</string>
+    <string name="empty">Empty</string>
+    <string name="search_advice_example">Example:</string>
+    <string name="master_class">master-class</string>
+    <string name="search_help">help</string>
 </resources>

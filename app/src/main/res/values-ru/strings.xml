@@ -67,4 +67,9 @@
     <string name="email">E-mail</string>
     <string name="enter_email">Введите e-mail</string>
     <string name="enter_password">Введите пароль</string>
+    <string name="search_advice">Напишите в строке поиска название мероприятия или ключевые слова.</string>
+    <string name="search_advice_example">Например:</string>
+    <string name="empty">Пусто</string>
+    <string name="master_class">мастер-класс</string>
+    <string name="search_help">помощь</string>
 </resources>

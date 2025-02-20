@@ -68,7 +68,10 @@ fun TextField(
                             .padding(end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(modifier = Modifier.weight(1f)) {
+                        Box(
+                            modifier = Modifier.weight(1f),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
                             if (value.isEmpty()) {
                                 Text(
                                     text = placeholder,
