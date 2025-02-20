@@ -31,7 +31,8 @@
         "title": "Мероприятия",
         "imageUrl": "https://kassaev.com/media/event.png"
       }
-    ]
+    ],
+    "isWatched": false
   },
   {
     "id": "2",
@@ -65,6 +66,7 @@
         "title": "Мероприятия",
         "imageUrl": "https://kassaev.com/media/event.png"
       }
-    ]
+    ],
+    "isWatched": false
   }
 ]

@@ -13,27 +13,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kassaev.simbirsoft_1_git.R
-import com.kassaev.simbirsoft_1_git.util.BottomBarItem
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
-import com.kassaev.simbirsoft_1_git.navigation.Router.Authorization
-import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
+import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
+import com.kassaev.simbirsoft_1_git.util.BottomBarItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun BottomBar() {
+fun BottomBar(
+    newsViewModel: NewsViewModel = koinViewModel()
+) {
 
     val navController = LocalNavController.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val unWatchedNewsCount by newsViewModel.getUnWatchedNewsFlow().collectAsStateWithLifecycle()
     val currentDestination = navBackStackEntry?.destination
     val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
-        NavDestination.hasRoute<EventDetail>()
+        NavDestination.hasRoute<Router.EventDetail>()
     } == true
     val isAuthorization = currentDestination?.hierarchy?.any { NavDestination ->
-        NavDestination.hasRoute<Authorization>()
+        NavDestination.hasRoute<Router.Authorization>()
+    } == true
+    val isNewsDestination = currentDestination?.hierarchy?.any { NavDestination ->
+        NavDestination.hasRoute<Router.News>()
     } == true
     val bottomItemList = listOf(
         BottomBarItem(
@@ -88,7 +95,8 @@ fun BottomBar() {
                                 launchSingleTop = true
                                 popUpTo(bottomItem.route) { inclusive = true }
                             }
-                        }
+                        },
+                        badgeCount = if (isNewsDestination) unWatchedNewsCount else null
                     )
                 }
             }
