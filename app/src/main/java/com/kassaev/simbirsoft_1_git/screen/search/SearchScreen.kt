@@ -1,15 +1,24 @@
 package com.kassaev.simbirsoft_1_git.screen.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -20,20 +29,31 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.unit.sp
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.EventCard
 import com.kassaev.simbirsoft_1_git.UiKit.NpoRow
 import com.kassaev.simbirsoft_1_git.UiKit.SearchField
 import com.kassaev.simbirsoft_1_git.UiKit.SearchResultMeta
 import com.kassaev.simbirsoft_1_git.UiKit.SearchTabRow
+import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGrey
+import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import com.kassaev.simbirsoft_1_git.util.Npo
@@ -61,8 +81,11 @@ fun SearchScreen(
     val pagerState = rememberPagerState {
         tabList.size
     }
-    val searchValue by viewModel.getSearchValueFlow().collectAsStateWithLifecycle()
-    val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
+    val searchValue by viewModel.getSearchValueObservable()
+        .subscribeAsState(initial = "")
+
+    val state = viewModel.getStateObservable()
+        .subscribeAsState(initial = SearchScreenState.Init()).value
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -96,56 +119,174 @@ fun SearchScreen(
         )
         when(state) {
             is SearchScreenState.Empty -> {
-                Text("empty...")
+                SearchScreenEmpty()
             }
             is SearchScreenState.Failure -> {
-                Text("Oooppsss..")
+                SearchScreenFailure()
             }
             is SearchScreenState.Init -> {
-                Text("Init")
+                SearchScreenInit()
             }
             is SearchScreenState.Loading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = Leaf
-                    )
-                }
+                SearchScreenLoading()
             }
             is SearchScreenState.Success -> {
-                SearchResultMeta(
-                    keywordList = state.data.keywordList,
-                    amount = when(selectedTabIndex) {
-                        0 -> "${state.data.eventList.size} " + stringResource(R.string.event)
-                        1 -> "${state.data.npoList.size} " + stringResource(R.string.npo)
-                        else -> ""
-                    }
-                )
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(LightGrey),
-                    verticalAlignment = Alignment.Top
-                ) { page ->
-                    when (page) {
-                        0 -> {
-                            EventList(
-                                eventList = state.data.eventList
-                            )
-                        }
-                        1 -> {
-                            NpoList(
-                                npoList = state.data.npoList
-                            )
-                        }
-                    }
-                }
+                SearchScreenSuccess(state, selectedTabIndex, pagerState)
             }
         }
+    }
+}
+
+@Composable
+private fun SearchScreenSuccess(
+    state: SearchScreenState.Success,
+    selectedTabIndex: Int,
+    pagerState: PagerState
+) {
+    SearchResultMeta(
+        keywordList = state.data.keywordList,
+        amount = when (selectedTabIndex) {
+            0 -> "${state.data.eventList.size} " + stringResource(R.string.event)
+            1 -> "${state.data.npoList.size} " + stringResource(R.string.npo)
+            else -> ""
+        }
+    )
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LightGrey),
+        verticalAlignment = Alignment.Top
+    ) { page ->
+        when (page) {
+            0 -> {
+                EventList(
+                    eventList = state.data.eventList
+                )
+            }
+
+            1 -> {
+                NpoList(
+                    npoList = state.data.npoList
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchScreenLoading() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = Leaf
+        )
+    }
+}
+
+@Composable
+private fun SearchScreenInit() {
+    val annotatedString = buildAnnotatedString {
+        append(stringResource(R.string.search_advice_example))
+        append(" ")
+        pushStringAnnotation(tag = "master-class", annotation = "master-class")
+        withStyle(style = SpanStyle(color = Leaf, textDecoration = TextDecoration.Underline)) {
+            append(stringResource(R.string.master_class))
+        }
+        pop()
+        append(", ")
+        pushStringAnnotation(tag = "help", annotation = "help")
+        withStyle(style = SpanStyle(color = Leaf, textDecoration = TextDecoration.Underline)) {
+            append(stringResource(R.string.search_help))
+        }
+        pop()
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LightGrey)
+            .padding(20.dp)
+            .verticalScroll(rememberScrollState())
+            .imePadding(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                painter = painterResource(R.drawable.search_image),
+                contentDescription = stringResource(R.string.search),
+                contentScale = ContentScale.Fit
+            )
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(
+                text = stringResource(R.string.search_advice),
+                color = CharcoalGrey,
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            ClickableText(
+                text = annotatedString,
+                style = TextStyle(color = CharcoalGrey, fontSize = 15.sp),
+                onClick = { offset ->
+                    annotatedString.getStringAnnotations(
+                        tag = "master-class",
+                        start = offset,
+                        end = offset
+                    )
+                        .firstOrNull()?.let {
+                            println("master-class")
+                        }
+
+                    annotatedString.getStringAnnotations(tag = "help", start = offset, end = offset)
+                        .firstOrNull()?.let {
+                            println("help")
+                        }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchScreenEmpty() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LightGrey),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.empty),
+            color = CharcoalGrey,
+        )
+    }
+}
+
+@Composable
+private fun SearchScreenFailure() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(White),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            painter = painterResource(R.drawable.sad_pepe),
+            contentDescription = stringResource(R.string.oops),
+            contentScale = ContentScale.FillWidth,
+        )
     }
 }
 
