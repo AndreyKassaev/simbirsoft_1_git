@@ -63,7 +63,7 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Search
+                startDestination = Router.Authorization
             ) {
                 composable<Router.News> {
                     NewsScreen(

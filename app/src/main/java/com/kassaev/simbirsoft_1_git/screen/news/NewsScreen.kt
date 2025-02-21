@@ -63,8 +63,14 @@ fun NewsScreen(
 ) {
     val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
     val filterState by viewModel.getFilterSwitchStateFlow().collectAsStateWithLifecycle()
+    val isServiceStarted by viewModel.getIsServiceStarted().collectAsStateWithLifecycle()
     var isFilterOpen by remember {
         mutableStateOf(false)
+    }
+    LaunchedEffect(isServiceStarted) {
+        if (!isServiceStarted) {
+            viewModel.getNewsList()
+        }
     }
     LaunchedEffect(Unit) {
         setTopAppBar {

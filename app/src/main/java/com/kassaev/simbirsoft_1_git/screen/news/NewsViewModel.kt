@@ -35,6 +35,9 @@ class NewsViewModel(
 
     private val unWatchedNewsSubject = BehaviorSubject.createDefault(0)
 
+    private val isServiceStartedMutable = MutableStateFlow(false)
+    private val isServiceStarted: StateFlow<Boolean> = isServiceStartedMutable
+
     private var eventAssetReaderService: EventAssetReaderService? = null
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(
@@ -58,7 +61,6 @@ class NewsViewModel(
     }
 
     init {
-        getNewsList()
         viewModelScope.launch {
             state.collectLatest { currState ->
                 if (currState is NewsScreenState.Success) {
@@ -77,6 +79,8 @@ class NewsViewModel(
     fun getStateFlow() = state
 
     fun getFilterSwitchStateFlow() = filterSwitchState
+
+    fun getIsServiceStarted() = isServiceStarted
 
     fun setFilterSwitchMoneyState(state: Boolean) {
         viewModelScope.launch {
@@ -119,11 +123,12 @@ class NewsViewModel(
         }
     }
 
-    private fun updateUnWatchedNews(count: Int) {
-        unWatchedNewsSubject.onNext(count)
-    }
-
-    private fun getNewsList() {
+    fun getNewsList() {
+        viewModelScope.launch {
+            isServiceStartedMutable.update {
+                true
+            }
+        }
         val intent = Intent(context, EventAssetReaderService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ContextCompat.startForegroundService(context, intent)
@@ -131,6 +136,10 @@ class NewsViewModel(
             context.startService(intent)
         }
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun updateUnWatchedNews(count: Int) {
+        unWatchedNewsSubject.onNext(count)
     }
 
     private fun unBindService() {

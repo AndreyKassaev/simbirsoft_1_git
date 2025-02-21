@@ -10,6 +10,7 @@ import com.kassaev.simbirsoft_1_git.screen.help.HelpViewModel
 import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileViewModel
 import com.kassaev.simbirsoft_1_git.screen.search.SearchViewModel
+import com.kassaev.simbirsoft_1_git.util.RxJavaTask
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -18,12 +19,13 @@ import org.koin.dsl.module
 
 val appModule = module{
     viewModelOf(::ProfileViewModel)
-    single { HelpViewModel(get()) }
-    viewModelOf(::SearchViewModel)
-    single { NewsViewModel(get(), get()) }
+    singleOf(::HelpViewModel)
+    singleOf(::SearchViewModel)
+    singleOf(::NewsViewModel)
     viewModelOf(::EventDetailViewModel)
     single { androidContext().assets }
     singleOf(::EventRepositoryImpl) bind EventRepository::class
     singleOf(::CategoryRepositoryImpl) bind CategoryRepository::class
     viewModelOf(::AuthorizationViewModel)
+    singleOf(::RxJavaTask)
 }

@@ -30,6 +30,7 @@ import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,7 @@ fun AuthorizationScreen(
     viewModel: AuthorizationViewModel = koinViewModel()
 ) {
     val navController = LocalNavController.current
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -63,7 +65,7 @@ fun AuthorizationScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-
+                            (context as? android.app.Activity)?.finishAffinity()
                         }
                     ) {
                         Icon(
