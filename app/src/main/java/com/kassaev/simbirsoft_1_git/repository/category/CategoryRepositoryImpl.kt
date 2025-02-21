@@ -1,19 +1,29 @@
 package com.kassaev.simbirsoft_1_git.repository.category
 
 import android.content.res.AssetManager
+import android.util.Log
 import com.kassaev.simbirsoft_1_git.util.HelpCategory
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.serialization.json.Json
 
 class CategoryRepositoryImpl(
     private val assetManager: AssetManager
 ): CategoryRepository {
-    private var categoryList = emptyList<HelpCategory>()
+private var categoryList = emptyList<HelpCategory>()
 
-    override fun getCategoryList(): List<HelpCategory> {
-        if (categoryList.isEmpty()) {
-            categoryList = loadCategoryListFromAssets()
+    override fun getCategoryListObservable(): Observable<List<HelpCategory>> {
+        return Observable.create<List<HelpCategory>> { emitter ->
+            Log.d("RX_THREAD", "Creating Observable on: ${Thread.currentThread().name}")
+
+            if (categoryList.isEmpty()) {
+                categoryList = loadCategoryListFromAssets()
+            }
+            emitter.onNext(categoryList)
+            emitter.onComplete()
         }
-        return categoryList
+            .subscribeOn(Schedulers.io())
+            .doOnNext { Log.d("RX_THREAD", "Loaded categories on: ${Thread.currentThread().name}") }
     }
 
     private fun loadCategoryListFromAssets(): List<HelpCategory> {

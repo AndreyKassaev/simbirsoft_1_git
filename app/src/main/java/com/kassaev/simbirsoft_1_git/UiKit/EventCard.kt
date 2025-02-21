@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -44,14 +45,19 @@ import java.util.Locale
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun EventCard(event: Event) {
+fun EventCard(
+    event: Event,
+    setIsWatched: (String) -> Unit = {},
+) {
     val navController = LocalNavController.current
     Box(
         modifier = Modifier
             .height(300.dp)
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(4.dp))
-            .clickable{
+            .alpha(if (event.isWatched) 0.3F else 1F)
+            .clickable {
+                setIsWatched(event.id)
                 navController.navigate(
                     Router.EventDetail(eventId = event.id)
                 )

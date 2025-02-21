@@ -1,6 +1,7 @@
 package com.kassaev.simbirsoft_1_git.UiKit
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kassaev.simbirsoft_1_git.R
@@ -39,12 +42,14 @@ import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGreyLight
 import com.kassaev.simbirsoft_1_git.ui.theme.DividerGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
+import com.kassaev.simbirsoft_1_git.ui.theme.LightGreyTwo
 
 @Composable
 fun TextFieldPassword(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    placeholder: String = "",
 ) {
     val customTextSelectionColors = TextSelectionColors(
         handleColor = Leaf,
@@ -77,15 +82,40 @@ fun TextFieldPassword(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 8.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        innerText()
+                        Row(
+                            modifier = Modifier
+                                .weight(0.9F),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                if (value.isEmpty()) {
+                                    Text(
+                                        text = placeholder,
+                                        color = LightGreyTwo,
+                                        fontSize = 20.sp
+                                    )
+                                }
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 6.dp)
+                                ) {
+                                    innerText()
+                                }
+                            }
+                        }
                         IconButton(
                             modifier = Modifier
                                 .padding(PaddingValues(0.dp))
-                                .offset(x = 12.dp),
+                                .offset(x = 12.dp)
+                                .weight(0.1F)
+                                .height(24.dp),
                             onClick = {
                                 isPasswordVisible = !isPasswordVisible
                             }
@@ -96,6 +126,7 @@ fun TextFieldPassword(
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                     HorizontalDivider(
                         modifier = Modifier
                             .height(1.dp),
@@ -105,4 +136,17 @@ fun TextFieldPassword(
             }
         )
     }
+}
+
+@Preview(
+    showBackground = true
+)
+@Composable
+private fun TextFieldPasswordPrev() {
+    TextFieldPassword(
+        label = "label",
+        value = "",
+        onValueChange = {},
+        placeholder = "placeholder"
+    )
 }

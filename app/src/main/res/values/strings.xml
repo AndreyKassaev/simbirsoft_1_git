@@ -54,4 +54,21 @@
     <string name="share">Share</string>
     <string name="download_report">Download report</string>
     <string name="visit_organization">Visit organization</string>
+    <string name="authorization">Authorization</string>
+    <string name="auth_via_socials">To participate in events, log in to the application via social networks</string>
+    <string name="vk">Vkontakte</string>
+    <string name="facebook">Facebook</string>
+    <string name="ok">Ok - social media network</string>
+    <string name="auth_via_app">Or auth via the app</string>
+    <string name="enter">Enter</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="registration">Registration</string>
+    <string name="email">E-mail</string>
+    <string name="enter_email">Enter e-mail</string>
+    <string name="enter_password">Enter password</string>
+    <string name="search_advice">Type the event name or keywords in the search bar.</string>
+    <string name="empty">Empty</string>
+    <string name="search_advice_example">Example:</string>
+    <string name="master_class">master-class</string>
+    <string name="search_help">help</string>
 </resources>

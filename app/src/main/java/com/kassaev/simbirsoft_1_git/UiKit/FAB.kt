@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
 import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.navigation.Router.Authorization
 import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.Melon
@@ -35,8 +36,10 @@ fun FAB() {
     val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute<EventDetail>()
     } == true
-
-    if (isEventDetail) {
+    val isAuthorization = currentDestination?.hierarchy?.any { NavDestination ->
+        NavDestination.hasRoute<Authorization>()
+    } == true
+    if (isEventDetail || isAuthorization) {
         {}
     } else {
         SmallFloatingActionButton(

@@ -63,8 +63,14 @@ fun NewsScreen(
 ) {
     val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
     val filterState by viewModel.getFilterSwitchStateFlow().collectAsStateWithLifecycle()
+    val isServiceStarted by viewModel.getIsServiceStarted().collectAsStateWithLifecycle()
     var isFilterOpen by remember {
         mutableStateOf(false)
+    }
+    LaunchedEffect(isServiceStarted) {
+        if (!isServiceStarted) {
+            viewModel.getNewsList()
+        }
     }
     LaunchedEffect(Unit) {
         setTopAppBar {
@@ -109,7 +115,8 @@ fun NewsScreen(
                 setFilterSwitchMoneyState = viewModel::setFilterSwitchMoneyState,
                 setFilterSwitchStuffState = viewModel::setFilterSwitchStuffState,
                 filterState = filterState,
-                isFilterOpen = isFilterOpen
+                isFilterOpen = isFilterOpen,
+                setIsWatched = viewModel::setIsWatched,
             )
         }
         is NewsScreenState.Failure -> {
@@ -128,7 +135,8 @@ fun NewsScreenSuccess(
     setFilterSwitchStuffState: (Boolean) -> Unit,
     setFilterSwitchMoneyState: (Boolean) -> Unit,
     filterState: FilterSwitchState,
-    isFilterOpen: Boolean
+    isFilterOpen: Boolean,
+    setIsWatched: (String) -> Unit,
 ) {
     if (isFilterOpen) {
         Column(
@@ -203,7 +211,10 @@ fun NewsScreenSuccess(
         ) {
             item {} //Space between topAppBar and first item
             items(newsList) { news ->
-                EventCard(event = news)
+                EventCard(
+                    event = news,
+                    setIsWatched = setIsWatched
+                )
             }
         }
     }
