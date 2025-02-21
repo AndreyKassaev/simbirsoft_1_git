@@ -14,6 +14,8 @@ import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.service.EventAssetReaderService
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -31,8 +33,7 @@ class NewsViewModel(
     private val filterSwitchStateMutable = MutableStateFlow<FilterSwitchState>(FilterSwitchState.default)
     private val filterSwitchState: StateFlow<FilterSwitchState> = filterSwitchStateMutable
 
-    private val unWatchedNewsMutable = MutableStateFlow<Int>(0)
-    private val unWatchedNews: StateFlow<Int> = unWatchedNewsMutable
+    private val unWatchedNewsSubject = BehaviorSubject.createDefault(0)
 
     private var eventAssetReaderService: EventAssetReaderService? = null
     private val connection = object : ServiceConnection {
@@ -61,15 +62,17 @@ class NewsViewModel(
         viewModelScope.launch {
             state.collectLatest { currState ->
                 if (currState is NewsScreenState.Success) {
-                    unWatchedNewsMutable.update {
+                    updateUnWatchedNews(
                         currState.data.count { event -> !event.isWatched }
-                    }
+                    )
                 }
             }
         }
     }
 
-    fun getUnWatchedNewsFlow() = unWatchedNews
+    fun getUnWatchedNewsObservable(): Observable<Int> {
+        return unWatchedNewsSubject.hide()
+    }
 
     fun getStateFlow() = state
 
@@ -114,6 +117,10 @@ class NewsViewModel(
                 }
             }
         }
+    }
+
+    private fun updateUnWatchedNews(count: Int) {
+        unWatchedNewsSubject.onNext(count)
     }
 
     private fun getNewsList() {

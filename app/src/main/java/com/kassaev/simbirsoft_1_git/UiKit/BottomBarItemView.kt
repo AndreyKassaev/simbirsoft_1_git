@@ -49,16 +49,20 @@ fun BottomBarItemView(
                     }
                 }
             ) {
-                Icon(
-                    painter = painterResource(icon),
-                    contentDescription = null,
-                    tint = if (isSelected) Leaf else Color.Unspecified
-                )
-                Text(
-                    text = stringResource(title),
-                    fontSize = 10.sp,
-                    color = if (isSelected) Leaf else WarmGrey
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        painter = painterResource(icon),
+                        contentDescription = null,
+                        tint = if (isSelected) Leaf else Color.Unspecified
+                    )
+                    Text(
+                        text = stringResource(title),
+                        fontSize = 10.sp,
+                        color = if (isSelected) Leaf else WarmGrey
+                    )
+                }
             }
         } else {
             Icon(

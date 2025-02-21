@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -31,7 +32,8 @@ fun BottomBar(
 
     val navController = LocalNavController.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val unWatchedNewsCount by newsViewModel.getUnWatchedNewsFlow().collectAsStateWithLifecycle()
+    val unWatchedNewsCount by newsViewModel.getUnWatchedNewsObservable()
+        .subscribeAsState(initial = 0)
     val currentDestination = navBackStackEntry?.destination
     val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute<Router.EventDetail>()
@@ -39,14 +41,12 @@ fun BottomBar(
     val isAuthorization = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute<Router.Authorization>()
     } == true
-    val isNewsDestination = currentDestination?.hierarchy?.any { NavDestination ->
-        NavDestination.hasRoute<Router.News>()
-    } == true
     val bottomItemList = listOf(
         BottomBarItem(
             icon = R.drawable.list,
             title = R.string.news,
             route = Router.News,
+            badgeCount = unWatchedNewsCount
         ),
         BottomBarItem(
             icon = R.drawable.search,
@@ -96,7 +96,7 @@ fun BottomBar(
                                 popUpTo(bottomItem.route) { inclusive = true }
                             }
                         },
-                        badgeCount = if (isNewsDestination) unWatchedNewsCount else null
+                        badgeCount = bottomItem.badgeCount
                     )
                 }
             }
