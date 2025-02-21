@@ -13,7 +13,8 @@ data class Event(
     val timestamp: Long,
     val organization: String,
     val people: List<Friend> = emptyList(),
-    val categoryList: List<HelpCategory>
+    val categoryList: List<HelpCategory>,
+    val isWatched: Boolean
 ) {
     companion object {
         val default = Event(
@@ -24,7 +25,8 @@ data class Event(
             timestamp = System.currentTimeMillis(),
             organization = LoremIpsum(4).values.joinToString(" "),
             people = List(42) { getMockFriend() },
-            categoryList = emptyList()
+            categoryList = emptyList(),
+            isWatched = false
         )
     }
 }

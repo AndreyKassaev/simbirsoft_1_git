@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kassaev.simbirsoft_1_git.UiKit.BottomBar
 import com.kassaev.simbirsoft_1_git.UiKit.FAB
+import com.kassaev.simbirsoft_1_git.screen.authorization.AuthorizationScreen
 import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailScreen
 import com.kassaev.simbirsoft_1_git.screen.help.HelpScreen
 import com.kassaev.simbirsoft_1_git.screen.history.HistoryScreen
@@ -62,7 +63,7 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Help
+                startDestination = Router.Authorization
             ) {
                 composable<Router.News> {
                     NewsScreen(
@@ -96,6 +97,12 @@ fun Navigation() {
                 }
                 composable<Router.EventDetail> {
                     EventDetailScreen(
+                        setTopAppBar = setTopAppBar,
+                        scrollBehavior = scrollBehavior
+                    )
+                }
+                composable<Router.Authorization> {
+                    AuthorizationScreen(
                         setTopAppBar = setTopAppBar,
                         scrollBehavior = scrollBehavior
                     )

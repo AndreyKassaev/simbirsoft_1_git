@@ -55,4 +55,21 @@
     <string name="share">Поделиться</string>
     <string name="download_report">Скачать отчет</string>
     <string name="visit_organization">Перейти на сайт организации</string>
+    <string name="authorization">Авторизация</string>
+    <string name="auth_via_socials">Для участия в мероприятиях войдите\nв приложение через социальые сети</string>
+    <string name="vk">Вконтакте</string>
+    <string name="facebook">Фейсбук</string>
+    <string name="ok">Одноклассники</string>
+    <string name="auth_via_app">Или авторизуйтесь через приложение</string>
+    <string name="enter">Войти</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="registration">Регистрация</string>
+    <string name="email">E-mail</string>
+    <string name="enter_email">Введите e-mail</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="search_advice">Напишите в строке поиска название мероприятия или ключевые слова.</string>
+    <string name="search_advice_example">Например:</string>
+    <string name="empty">Пусто</string>
+    <string name="master_class">мастер-класс</string>
+    <string name="search_help">помощь</string>
 </resources>

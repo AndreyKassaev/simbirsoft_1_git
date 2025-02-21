@@ -18,5 +18,7 @@ sealed class Router{
     data class EventDetail(
         val eventId: String? = null
     ): Router()
+    @Serializable
+    data object Authorization: Router()
 }
 

@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,12 +45,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
+import com.kassaev.simbirsoft_1_git.screen.search.SearchScreenState
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGreyTwo
 import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import com.kassaev.simbirsoft_1_git.util.HelpCategory
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.compose.koinViewModel
 
 private const val GRID_SIZE = 2
@@ -62,7 +65,10 @@ fun HelpScreen(
     viewModel: HelpViewModel = koinViewModel(),
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
-    val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
+    val state = viewModel
+        .getStateObservable()
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeAsState(initial = HelpScreenState.Loading()).value
 
     LaunchedEffect(Unit) {
         setTopAppBar {
@@ -72,6 +78,7 @@ fun HelpScreen(
             )
         }
     }
+
     when(state) {
         is HelpScreenState.Success -> {
             HelpScreenSuccess(

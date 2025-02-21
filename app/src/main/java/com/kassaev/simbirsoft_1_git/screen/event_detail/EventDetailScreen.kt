@@ -1,6 +1,5 @@
 package com.kassaev.simbirsoft_1_git.screen.event_detail
 
-import android.text.style.UnderlineSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

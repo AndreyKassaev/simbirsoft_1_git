@@ -94,4 +94,13 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // https://coil-kt.github.io/coil/gifs/
     implementation(libs.coil.gif)
+
+    //RxJava
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava
+    implementation(libs.rxjava)
+    // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxandroid
+    implementation(libs.rxandroid)
+    // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime-rxjava3
+    implementation(libs.androidx.runtime.rxjava3)
+
 }

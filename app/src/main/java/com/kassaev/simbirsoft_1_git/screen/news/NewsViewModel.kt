@@ -14,8 +14,11 @@ import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.service.EventAssetReaderService
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,14 +27,16 @@ class NewsViewModel(
     private val context: Context
 ) : AndroidViewModel(application) {
 
-    private val newsListMutable = MutableStateFlow<List<Event>>(emptyList())
-    private val newsList: StateFlow<List<Event>> = newsListMutable
-
     private val stateMutable = MutableStateFlow<NewsScreenState>(NewsScreenState.Loading())
     private val state: StateFlow<NewsScreenState> = stateMutable
 
     private val filterSwitchStateMutable = MutableStateFlow<FilterSwitchState>(FilterSwitchState.default)
     private val filterSwitchState: StateFlow<FilterSwitchState> = filterSwitchStateMutable
+
+    private val unWatchedNewsSubject = BehaviorSubject.createDefault(0)
+
+    private val isServiceStartedMutable = MutableStateFlow(false)
+    private val isServiceStarted: StateFlow<Boolean> = isServiceStartedMutable
 
     private var eventAssetReaderService: EventAssetReaderService? = null
     private val connection = object : ServiceConnection {
@@ -55,17 +60,27 @@ class NewsViewModel(
         override fun onServiceDisconnected(name: ComponentName?) {}
     }
 
-    private fun unBindService() {
-        context.unbindService(connection)
+    init {
+        viewModelScope.launch {
+            state.collectLatest { currState ->
+                if (currState is NewsScreenState.Success) {
+                    updateUnWatchedNews(
+                        currState.data.count { event -> !event.isWatched }
+                    )
+                }
+            }
+        }
     }
 
-    init {
-        getNewsList()
+    fun getUnWatchedNewsObservable(): Observable<Int> {
+        return unWatchedNewsSubject.hide()
     }
 
     fun getStateFlow() = state
 
     fun getFilterSwitchStateFlow() = filterSwitchState
+
+    fun getIsServiceStarted() = isServiceStarted
 
     fun setFilterSwitchMoneyState(state: Boolean) {
         viewModelScope.launch {
@@ -87,7 +102,33 @@ class NewsViewModel(
         }
     }
 
-    private fun getNewsList() {
+    fun setIsWatched(eventId: String) {
+        viewModelScope.launch {
+            stateMutable.update { currState ->
+                if (currState is NewsScreenState.Success) {
+                    val updatedEventList = currState.data.map { event ->
+                        if (event.id == eventId) {
+                            event.copy(
+                                isWatched = true
+                            )
+                        } else {
+                            event
+                        }
+                    }
+                    NewsScreenState.Success(data = updatedEventList)
+                } else {
+                    currState
+                }
+            }
+        }
+    }
+
+    fun getNewsList() {
+        viewModelScope.launch {
+            isServiceStartedMutable.update {
+                true
+            }
+        }
         val intent = Intent(context, EventAssetReaderService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             ContextCompat.startForegroundService(context, intent)
@@ -97,4 +138,11 @@ class NewsViewModel(
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
+    private fun updateUnWatchedNews(count: Int) {
+        unWatchedNewsSubject.onNext(count)
+    }
+
+    private fun unBindService() {
+        context.unbindService(connection)
+    }
 }
