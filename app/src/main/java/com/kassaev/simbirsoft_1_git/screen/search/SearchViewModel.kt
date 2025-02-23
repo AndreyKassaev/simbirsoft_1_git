@@ -1,48 +1,79 @@
 package com.kassaev.simbirsoft_1_git.screen.search
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 class SearchViewModel(
     private val eventRepository: EventRepository
 ) : ViewModel() {
 
     private val disposables = CompositeDisposable()
 
-    private val stateSubject = BehaviorSubject.createDefault<SearchScreenState>(SearchScreenState.Init())
-    private val searchValueSubject = BehaviorSubject.createDefault("")
+    private val stateSubject =
+        BehaviorSubject.createDefault<SearchScreenState>(SearchScreenState.Init())
+
+    private val searchValueMutable = MutableStateFlow("")
+    private val searchValue: StateFlow<String> = searchValueMutable
 
     init {
-        searchValueSubject
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .switchMap { searchText ->
+        updateStateWithSearchQuery()
+    }
+
+    fun getStateObservable(): Observable<SearchScreenState> = stateSubject.hide()
+
+    fun getSearchValue() = searchValue
+
+    fun setSearchValue(value: String) {
+        viewModelScope.launch {
+            searchValueMutable.update {
+                value
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.clear()
+    }
+
+    private fun updateStateWithSearchQuery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            searchValue.debounce(500L).collectLatest { searchText ->
                 val trimmedSearchText = searchText.trim().replace(Regex("\\s+"), " ")
                 if (trimmedSearchText.isEmpty()) {
-                    Observable.just(SearchScreenState.Init())
+                    stateSubject.onNext(SearchScreenState.Init())
                 } else {
-                    Observable.fromCallable {
-                        val currKeywordList = if (trimmedSearchText.contains(" ")) {
-                            trimmedSearchText.split(" ")
-                        } else {
-                            listOf(trimmedSearchText)
+                    val currKeywordList = if (trimmedSearchText.contains(" ")) {
+                        trimmedSearchText.split(" ")
+                    } else {
+                        listOf(trimmedSearchText)
+                    }
+
+                    val allEventList = eventRepository.getEventList()
+                    val filteredEventList = mutableSetOf<Event>()
+
+                    currKeywordList.forEach { word ->
+                        allEventList.find { event ->
+                            event.title.contains(word, ignoreCase = true)
+                        }?.let { foundEvent ->
+                            filteredEventList.add(foundEvent)
                         }
-
-                        val allEventList = eventRepository.getEventList()
-                        val filteredEventList = mutableSetOf<Event>()
-
-                        currKeywordList.forEach { word ->
-                            allEventList.find { event ->
-                                event.title.contains(word, ignoreCase = true)
-                            }?.let { foundEvent ->
-                                filteredEventList.add(foundEvent)
-                            }
-                        }
-
+                    }
+                    stateSubject.onNext(
                         if (filteredEventList.isNotEmpty()) {
                             SearchScreenState.Success(
                                 data = SearchScreenData.default.copy(
@@ -53,27 +84,9 @@ class SearchViewModel(
                         } else {
                             SearchScreenState.Empty()
                         }
-                    }
+                    )
                 }
             }
-            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
-            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
-            .subscribe(
-                { state -> stateSubject.onNext(state) },
-                { error -> error.printStackTrace() }
-            )
-            .let { disposables.add(it) }
-    }
-
-    fun getStateObservable(): Observable<SearchScreenState> = stateSubject.hide()
-    fun getSearchValueObservable(): Observable<String> = searchValueSubject.hide()
-
-    fun setSearchValue(value: String) {
-        searchValueSubject.onNext(value)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
+        }
     }
 }

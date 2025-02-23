@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.EventCard
 import com.kassaev.simbirsoft_1_git.UiKit.NpoRow
@@ -81,8 +82,8 @@ fun SearchScreen(
     val pagerState = rememberPagerState {
         tabList.size
     }
-    val searchValue by viewModel.getSearchValueObservable()
-        .subscribeAsState(initial = "")
+
+    val searchValue by viewModel.getSearchValue().collectAsStateWithLifecycle()
 
     val state = viewModel.getStateObservable()
         .subscribeAsState(initial = SearchScreenState.Init()).value
