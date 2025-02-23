@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 @OptIn(FlowPreview::class)
 class SearchViewModel(
@@ -31,11 +30,7 @@ class SearchViewModel(
     private val searchValue: StateFlow<String> = searchValueMutable
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            searchValue.debounce(500L).collectLatest { searchText ->
-                updateState(searchText)
-            }
-        }
+        updateStateWithSearchQuery()
     }
 
     fun getStateObservable(): Observable<SearchScreenState> = stateSubject.hide()
@@ -55,39 +50,43 @@ class SearchViewModel(
         disposables.clear()
     }
 
-    private fun updateState(searchText: String) {
-        val trimmedSearchText = searchText.trim().replace(Regex("\\s+"), " ")
-        if (trimmedSearchText.isEmpty()) {
-            stateSubject.onNext(SearchScreenState.Init())
-        } else {
-            val currKeywordList = if (trimmedSearchText.contains(" ")) {
-                trimmedSearchText.split(" ")
-            } else {
-                listOf(trimmedSearchText)
-            }
-
-            val allEventList = eventRepository.getEventList()
-            val filteredEventList = mutableSetOf<Event>()
-
-            currKeywordList.forEach { word ->
-                allEventList.find { event ->
-                    event.title.contains(word, ignoreCase = true)
-                }?.let { foundEvent ->
-                    filteredEventList.add(foundEvent)
-                }
-            }
-            stateSubject.onNext(
-                if (filteredEventList.isNotEmpty()) {
-                    SearchScreenState.Success(
-                        data = SearchScreenData.default.copy(
-                            eventList = filteredEventList.toList(),
-                            keywordList = currKeywordList
-                        )
-                    )
+    private fun updateStateWithSearchQuery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            searchValue.debounce(500L).collectLatest { searchText ->
+                val trimmedSearchText = searchText.trim().replace(Regex("\\s+"), " ")
+                if (trimmedSearchText.isEmpty()) {
+                    stateSubject.onNext(SearchScreenState.Init())
                 } else {
-                    SearchScreenState.Empty()
+                    val currKeywordList = if (trimmedSearchText.contains(" ")) {
+                        trimmedSearchText.split(" ")
+                    } else {
+                        listOf(trimmedSearchText)
+                    }
+
+                    val allEventList = eventRepository.getEventList()
+                    val filteredEventList = mutableSetOf<Event>()
+
+                    currKeywordList.forEach { word ->
+                        allEventList.find { event ->
+                            event.title.contains(word, ignoreCase = true)
+                        }?.let { foundEvent ->
+                            filteredEventList.add(foundEvent)
+                        }
+                    }
+                    stateSubject.onNext(
+                        if (filteredEventList.isNotEmpty()) {
+                            SearchScreenState.Success(
+                                data = SearchScreenData.default.copy(
+                                    eventList = filteredEventList.toList(),
+                                    keywordList = currKeywordList
+                                )
+                            )
+                        } else {
+                            SearchScreenState.Empty()
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
