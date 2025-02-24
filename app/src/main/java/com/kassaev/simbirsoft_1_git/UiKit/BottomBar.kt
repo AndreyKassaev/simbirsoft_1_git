@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -32,8 +31,7 @@ fun BottomBar(
 
     val navController = LocalNavController.current
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val unWatchedNewsCount by newsViewModel.getUnWatchedNewsObservable()
-        .subscribeAsState(initial = 0)
+    val unWatchedNewsCount by newsViewModel.getUnWatchedNewsCountFlow().collectAsStateWithLifecycle()
     val currentDestination = navBackStackEntry?.destination
     val isEventDetail = currentDestination?.hierarchy?.any { NavDestination ->
         NavDestination.hasRoute<Router.EventDetail>()

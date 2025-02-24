@@ -10,12 +10,12 @@ import android.os.IBinder
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.service.EventAssetReaderService
-import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -33,7 +33,8 @@ class NewsViewModel(
     private val filterSwitchStateMutable = MutableStateFlow<FilterSwitchState>(FilterSwitchState.default)
     private val filterSwitchState: StateFlow<FilterSwitchState> = filterSwitchStateMutable
 
-    private val unWatchedNewsSubject = BehaviorSubject.createDefault(0)
+    private val unWatchedNewsCountMutable = MutableStateFlow<Int>(0)
+    private val unWatchedNewsCount: StateFlow<Int> = unWatchedNewsCountMutable
 
     private val isServiceStartedMutable = MutableStateFlow(false)
     private val isServiceStarted: StateFlow<Boolean> = isServiceStartedMutable
@@ -61,20 +62,10 @@ class NewsViewModel(
     }
 
     init {
-        viewModelScope.launch {
-            state.collectLatest { currState ->
-                if (currState is NewsScreenState.Success) {
-                    updateUnWatchedNews(
-                        currState.data.count { event -> !event.isWatched }
-                    )
-                }
-            }
-        }
+        updateUnWatchedNewsCount()
     }
 
-    fun getUnWatchedNewsObservable(): Observable<Int> {
-        return unWatchedNewsSubject.hide()
-    }
+    fun getUnWatchedNewsCountFlow() = unWatchedNewsCount
 
     fun getStateFlow() = state
 
@@ -138,11 +129,20 @@ class NewsViewModel(
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
-    private fun updateUnWatchedNews(count: Int) {
-        unWatchedNewsSubject.onNext(count)
-    }
-
     private fun unBindService() {
         context.unbindService(connection)
+    }
+
+    private fun updateUnWatchedNewsCount() {
+        val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+        scope.launch {
+            state.collectLatest { currState ->
+                if (currState is NewsScreenState.Success) {
+                    unWatchedNewsCountMutable.update {
+                        currState.data.count { event -> !event.isWatched }
+                    }
+                }
+            }
+        }
     }
 }

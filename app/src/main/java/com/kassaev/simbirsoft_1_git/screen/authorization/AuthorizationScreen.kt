@@ -1,6 +1,8 @@
 package com.kassaev.simbirsoft_1_git.screen.authorization
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +32,9 @@ import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -57,6 +61,7 @@ fun AuthorizationScreen(
 ) {
     val navController = LocalNavController.current
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -85,6 +90,9 @@ fun AuthorizationScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            }
             .background(White)
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
@@ -144,18 +152,19 @@ fun AuthorizationScreen(
                 value = credentials.email,
                 onValueChange = viewModel::setEmail,
                 label = stringResource(R.string.email),
-                placeholder = stringResource(R.string.enter_email)
+                placeholder = stringResource(R.string.enter_email),
             )
             Spacer(modifier = Modifier.height(20.dp))
             TextFieldPassword(
                 value = credentials.password,
                 onValueChange = viewModel::setPassword,
                 label = stringResource(R.string.password),
-                placeholder = stringResource(R.string.enter_password)
+                placeholder = stringResource(R.string.enter_password),
             )
             Spacer(modifier = Modifier.height(30.dp))
             Button(
                 onClick = {
+                    focusManager.clearFocus()
                     navController.navigate(
                         Router.Help
                     ) {
