@@ -18,7 +18,7 @@ class RxJavaTask(
     }
 
     private fun startTask() {
-        val disposable = categoryRepository.getCategoryListObservable()
+        val disposable = categoryRepository.getCategoryMapObservable()
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .doOnNext {
@@ -55,9 +55,9 @@ class RxJavaTask(
     }
 
     fun combineObservables(
-        repoObservable: Observable<List<HelpCategory>>,
+        repoObservable: Observable<Map<String, Category>>,
         randomObservable: Observable<List<String>>
-    ): Observable<Pair<List<HelpCategory>, List<String>>> {
+    ): Observable<Pair<Map<String, Category>, List<String>>> {
         return Observable.zip(repoObservable, randomObservable) { categories, randomData ->
             Log.d("RX_THREAD", "Combining results on: ${Thread.currentThread().name}")
             categories to randomData

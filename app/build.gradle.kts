@@ -72,6 +72,14 @@ dependencies {
     //Retrofit
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation(libs.retrofit)
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava3
+    implementation(libs.adapter.rxjava3)
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation(libs.retrofit2.converter.gson)
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+    implementation(libs.logging.interceptor)
+
+
 
     //Compose Navigation
     // https://mvnrepository.com/artifact/androidx.navigation/navigation-compose

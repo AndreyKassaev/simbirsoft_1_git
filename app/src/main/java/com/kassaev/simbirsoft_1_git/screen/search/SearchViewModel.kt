@@ -6,6 +6,7 @@ import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -62,29 +64,39 @@ class SearchViewModel(
                     } else {
                         listOf(trimmedSearchText)
                     }
+                    val disposable = eventRepository.getEventListObservable()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.computation())
+                        .subscribe(
+                            { eventList ->
+                                val filteredEventList = mutableSetOf<Event>()
 
-                    val allEventList = eventRepository.getEventList()
-                    val filteredEventList = mutableSetOf<Event>()
+                                currKeywordList.forEach { word ->
+                                    eventList.find { event ->
+                                        event.title.contains(word, ignoreCase = true)
+                                    }?.let { foundEvent ->
+                                        filteredEventList.add(foundEvent)
+                                    }
+                                }
 
-                    currKeywordList.forEach { word ->
-                        allEventList.find { event ->
-                            event.title.contains(word, ignoreCase = true)
-                        }?.let { foundEvent ->
-                            filteredEventList.add(foundEvent)
-                        }
-                    }
-                    stateSubject.onNext(
-                        if (filteredEventList.isNotEmpty()) {
-                            SearchScreenState.Success(
-                                data = SearchScreenData.default.copy(
-                                    eventList = filteredEventList.toList(),
-                                    keywordList = currKeywordList
+                                stateSubject.onNext(
+                                    if (filteredEventList.isNotEmpty()) {
+                                        SearchScreenState.Success(
+                                            data = SearchScreenData.default.copy(
+                                                eventList = filteredEventList.toList(),
+                                                keywordList = currKeywordList
+                                            )
+                                        )
+                                    } else {
+                                        SearchScreenState.Empty()
+                                    }
                                 )
-                            )
-                        } else {
-                            SearchScreenState.Empty()
-                        }
-                    )
+                            },
+                            { error ->
+                                stateSubject.onNext(SearchScreenState.Failure(error.message.toString()))
+                            }
+                        )
+                    disposables.add(disposable)
                 }
             }
         }
