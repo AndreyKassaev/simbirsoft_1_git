@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("com.google.devtools.ksp") version "2.1.10-1.0.30" apply false
 }
 ktlint {
     version.set("0.45.2")
