@@ -18,9 +18,18 @@ class HelpViewModel(
 
     private val stateSubject = BehaviorSubject.createDefault<HelpScreenState>(HelpScreenState.Loading())
     private val disposables = CompositeDisposable()
+
     init {
         loadCategories()
         triggerRxJavaTask()
+    }
+
+    fun getStateObservable(): Observable<HelpScreenState> = stateSubject.hide()
+
+    override fun onCleared() {
+        super.onCleared()
+        disposables.clear()
+        rxJavaTask.clearDisposables()
     }
 
     private fun triggerRxJavaTask() {
@@ -32,7 +41,7 @@ class HelpViewModel(
         )
 
         val combinedObservable = rxJavaTask.combineObservables(
-            categoryRepository.getCategoryListObservable(),
+            categoryRepository.getCategoryMapObservable(),
             randomDataObservable
         )
 
@@ -44,10 +53,8 @@ class HelpViewModel(
         disposables.add(combinedObservableDisposable)
     }
 
-    fun getStateObservable(): Observable<HelpScreenState> = stateSubject.hide()
-
     private fun loadCategories() {
-        val disposable = categoryRepository.getCategoryListObservable()
+        val disposable = categoryRepository.getCategoryMapObservable()
             .delay(5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
@@ -64,11 +71,5 @@ class HelpViewModel(
                 }
             )
         disposables.add(disposable)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-        rxJavaTask.clearDisposables()
     }
 }

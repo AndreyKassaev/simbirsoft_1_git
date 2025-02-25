@@ -1,72 +1,92 @@
 [
   {
-    "id": "UUID-0001",
-    "imageUrl": "https://kassaev.com/media/android_14.png",
-    "title": "Событие 1",
-    "description": "Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 Событие 1 ",
-    "timestamp": 1713561600000,
-    "organization": "Организатор 1",
-    "people": [
-      {
-        "id": "UUID-0002",
-        "firstName": "Имя",
-        "middleName": "Отчество",
-        "lastName": "Фамилия",
-        "imageUrl": "https://kassaev.com/media/android_11.png"
-      },
-      {
-        "id": "UUID-0002",
-        "firstName": "Имя",
-        "middleName": "Отчество",
-        "lastName": "Фамилия",
-        "imageUrl": "https://kassaev.com/media/android_11.png"
-      }
+    "id": "101",
+    "name": "Волшебство мгновения",
+    "startDate": 1582142400,
+    "endDate": 1683230400,
+    "description": "По полям, по полям Синий трактор едет к нам У него в прицепе кто-то песенку поет! А ну, малыш, давай! Попробуй - отгадай Кто же, кто же, кто же, кто же Песенку поет?!",
+    "status": 0,
+    "photos": [
+      "https://kassaev.com/media/young/draw_apu.jpg",
+      "https://kassaev.com/media/young/helicopterhat_apu.jpeg",
+      "https://kassaev.com/media/young/pants_apu.png"
     ],
-    "categoryList": [
-      {
-        "title": "Young",
-        "imageUrl": "https://kassaev.com/media/young.png"
-      },
-      {
-        "title": "Мероприятия",
-        "imageUrl": "https://kassaev.com/media/event.png"
-      }
-    ],
-    "isWatched": false
+    "category": "1",
+    "createdAt": 1582142400,
+    "phone": "88005553535",
+    "address": "ул. Пушкина, д. Колотушкина",
+    "organization": "Корпорация Добра"
   },
   {
-    "id": "2",
-    "imageUrl": "https://kassaev.com/media/android_13.png",
-    "title": "Мероприятие 2",
-    "description": "Мероприятие 2 Мероприятие 2 Мероприятие 2 Мероприятие 2 Мероприятие 2 Мероприятие 2 Мероприятие 2 Мероприятие 2 ",
-    "timestamp": 1713658000000,
-    "organization": "Организатор 2",
-    "people": [
-      {
-        "id": "UUID-0002",
-        "firstName": "Дети",
-        "middleName": "Отчество",
-        "lastName": "Фамилия",
-        "imageUrl": "https://kassaev.com/media/android_11.png"
-      },
-      {
-        "id": "UUID-0002",
-        "firstName": "Имя",
-        "middleName": "Отчество",
-        "lastName": "Фамилия",
-        "imageUrl": "https://kassaev.com/media/android_11.png"
-      }
+    "id": "201",
+    "name": "Светлая встреча",
+    "startDate": 1582142400,
+    "endDate": 1683230400,
+    "description": "Пусть прошлое раскрошится Волною о причал Мы вспомним всё хорошее Забудем про печаль Умчалась юность бедная За даль туманных звёзд И за любовь последнюю Я поднимаю тост",
+    "status": 0,
+    "photos": [
+      "https://kassaev.com/media/adult/emo_hank.jpeg",
+      "https://kassaev.com/media/adult/anime_hank.jpeg",
+      "https://kassaev.com/media/adult/naruto_hank.jpeg"
     ],
-    "categoryList": [
-      {
-        "title": "Взрослые",
-        "imageUrl": "https://kassaev.com/media/adult.png"
-      },
-      {
-        "title": "Мероприятия",
-        "imageUrl": "https://kassaev.com/media/event.png"
-      }
+    "category": "2",
+    "createdAt": 1582142400,
+    "phone": "88005553535",
+    "address": "ул. Пушкина, д. Колотушкина",
+    "organization": "Корпорация Добра"
+  },
+  {
+    "id": "301",
+    "name": "Гармоничное созвучие",
+    "startDate": 1582142400,
+    "endDate": 1683230400,
+    "description": "Влекут ли мечты небывалые, цветут ли цветы запоздалые Всё так же рыдает шарманка, в Париже она чужестранка",
+    "status": 0,
+    "photos": [
+      "https://kassaev.com/media/senior/simpsons.jpeg",
+      "https://kassaev.com/media/senior/simpsons2.jpeg",
+      "https://kassaev.com/media/senior/simpsons3.jpeg"
     ],
-    "isWatched": false
+    "category": "3",
+    "createdAt": 1582142400,
+    "phone": "88005553535",
+    "address": "ул. Пушкина, д. Колотушкина",
+    "organization": "Корпорация Добра"
+  },
+  {
+    "id": "401",
+    "name": "Радужный день",
+    "startDate": 1582142400,
+    "endDate": 1683230400,
+    "description": "Жил-был художник один, Домик имел и холсты, Но он актрису любил, Ту, что любила цветы. Он тогда продал свой дом, Продал картины и кров И на все деньги купил Целое море цветов.",
+    "status": 0,
+    "photos": [
+      "https://kassaev.com/media/animal/banan.jpg",
+      "https://kassaev.com/media/animal/cat_pancake.jpeg",
+      "https://kassaev.com/media/animal/duck.jpeg"
+    ],
+    "category": "4",
+    "createdAt": 1582142400,
+    "phone": "88005553535",
+    "address": "ул. Пушкина, д. Колотушкина",
+    "organization": "Корпорация Добра"
+  },
+  {
+    "id": "501",
+    "name": "Оживающая фантазия",
+    "startDate": 1582142400,
+    "endDate": 1683230400,
+    "description": "Ибица - и биться сердце стало чаще, Она поймала своё счастье Под ритмы Ибицы кружилась и влюбилась! Ибица! Она поймала своё счастье. Под ритмы Ибицы кружилась и влюбилась.",
+    "status": 0,
+    "photos": [
+      "https://kassaev.com/media/event/pepelangelo1.jpeg",
+      "https://kassaev.com/media/event/pepelangelo2.jpeg",
+      "https://kassaev.com/media/event/pepelangelo3.jpeg"
+    ],
+    "category": "5",
+    "createdAt": 1582142400,
+    "phone": "88005553535",
+    "address": "ул. Пушкина, д. Колотушкина",
+    "organization": "Корпорация Добра"
   }
 ]

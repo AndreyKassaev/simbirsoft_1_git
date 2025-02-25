@@ -1,0 +1,32 @@
+{
+  "kids": {
+    "id": "1",
+    "nameEn": "kids",
+    "name": "дети",
+    "image": "https://kassaev.com/media/young.png"
+  },
+  "adult": {
+    "id": "2",
+    "nameEn": "adult",
+    "name": "взрослые",
+    "image": "https://kassaev.com/media/adult.png"
+  },
+  "senior": {
+    "id": "3",
+    "nameEn": "senior",
+    "name": "пожилые",
+    "image": "https://kassaev.com/media/senior.png"
+  },
+  "animal": {
+    "id": "4",
+    "nameEn": "animal",
+    "name": "животные",
+    "image": "https://kassaev.com/media/animal.png"
+  },
+  "event": {
+    "id": "5",
+    "nameEn": "event",
+    "name": "мероприятия",
+    "image": "https://kassaev.com/media/event.png"
+  }
+}

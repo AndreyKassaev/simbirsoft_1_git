@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -91,11 +92,13 @@ fun EventDetailScreen(
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.9F),
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                item {  }
+                item { }
                 item {
                     Text(
                         text = event.title,
@@ -131,7 +134,7 @@ fun EventDetailScreen(
                 }
                 item {
                     AsyncImage(
-                        model = event.imageUrl,
+                        model = event.imageUrlList.firstOrNull(),
                         contentDescription = stringResource(R.string.profile_image),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -170,7 +173,7 @@ fun EventDetailScreen(
                             )
                         }
                         Text(
-                            text = if((event.people.size - 3) > 0) "+${event.people.size - 3}" else "",
+                            text = if ((event.people.size - 3) > 0) "+${event.people.size - 3}" else "",
                             color = CharcoalGrey,
                             fontSize = 13.sp,
                             modifier = Modifier
@@ -179,12 +182,14 @@ fun EventDetailScreen(
                     }
                 }
             }
-            Column(
+            Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
                     .background(White)
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
+                    .fillMaxHeight(0.1F)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
             ) {
                 Button(
                     onClick = {

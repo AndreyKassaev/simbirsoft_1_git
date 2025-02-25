@@ -7,25 +7,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Event(
     val id: String,
-    val imageUrl: String,
+    val imageUrlList: List<String>,
     val title: String,
     val description: String,
     val timestamp: Long,
     val organization: String,
     val people: List<Friend> = emptyList(),
-    val categoryList: List<HelpCategory>,
+    val category: String,
     val isWatched: Boolean
 ) {
     companion object {
         val default = Event(
             id = "UUID-0001",
-            imageUrl = "https://kassaev.com/media/android_14.png",
+            imageUrlList = listOf("https://kassaev.com/media/android_14.png",),
             title = LoremIpsum(4).values.joinToString(" "),
             description = LoremIpsum(13).values.joinToString(" "),
             timestamp = System.currentTimeMillis(),
             organization = LoremIpsum(4).values.joinToString(" "),
             people = List(42) { getMockFriend() },
-            categoryList = emptyList(),
+            category = "",
             isWatched = false
         )
     }
