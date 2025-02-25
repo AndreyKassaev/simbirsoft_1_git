@@ -1,45 +1,55 @@
 package com.kassaev.simbirsoft_1_git.screen.authorization
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class AuthorizationViewModel: ViewModel() {
 
-    private val credentialsSubject: BehaviorSubject<Credentials> = BehaviorSubject.createDefault(Credentials.default)
-    private val isValidSubject: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val disposables = CompositeDisposable()
+    private val credentialsFlowMutable = MutableStateFlow<Credentials>(Credentials.default)
+    private val credentialsFlow: StateFlow<Credentials> = credentialsFlowMutable
+
+    private val isValidFlowMutable = MutableStateFlow<Boolean>(false)
+    private val isValidFlow: StateFlow<Boolean> = isValidFlowMutable
 
     init {
-        val disposable = credentialsSubject
-            .distinctUntilChanged()
-            .subscribe { currCredentials ->
-                val isValid = currCredentials.email.length >= 6 && currCredentials.password.length >= 6
-                isValidSubject.onNext(isValid)
+        viewModelScope.launch {
+            credentialsFlow.collectLatest { currentCredentials ->
+                isValidFlowMutable.update {
+                    currentCredentials.password.length >= 6 && currentCredentials.email.length >= 6
+                }
             }
-        disposables.add(disposable)
+        }
     }
 
-    fun getCredentialsObservable(): Observable<Credentials> = credentialsSubject.hide()
+    fun getCredentialsFlow() = credentialsFlow
 
-    fun getIsValidObservable(): Observable<Boolean> = isValidSubject.hide()
+    fun getIsValidFlow() = isValidFlow
 
     fun setEmail(email: String) {
-        val current = credentialsSubject.value ?: Credentials.default
-        credentialsSubject.onNext(current.copy(email = email))
+        viewModelScope.launch {
+            credentialsFlowMutable.update { currentCredentials ->
+                currentCredentials.copy(
+                    email = email
+                )
+            }
+        }
     }
 
     fun setPassword(password: String) {
-        val current = credentialsSubject.value ?: Credentials.default
-        credentialsSubject.onNext(current.copy(password = password))
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
+        viewModelScope.launch {
+            credentialsFlowMutable.update { currentCredentials ->
+                currentCredentials.copy(
+                    password = password
+                )
+            }
+        }
     }
 }
 

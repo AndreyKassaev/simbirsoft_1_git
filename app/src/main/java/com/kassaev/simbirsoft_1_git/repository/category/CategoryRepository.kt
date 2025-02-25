@@ -1,8 +1,8 @@
 package com.kassaev.simbirsoft_1_git.repository.category
 
 import com.kassaev.simbirsoft_1_git.util.Category
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.flow.StateFlow
 
 interface CategoryRepository {
-    fun getCategoryMapObservable(): Observable<Map<String, Category>>
+    fun getCategoryMapFlow(): StateFlow<Map<String, Category>>
 }

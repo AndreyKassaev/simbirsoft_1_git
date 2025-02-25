@@ -29,7 +29,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -83,10 +82,10 @@ fun SearchScreen(
         tabList.size
     }
 
-    val searchValue by viewModel.getSearchValue().collectAsStateWithLifecycle()
+    val searchValue by viewModel.getSearchValueFlow().collectAsStateWithLifecycle()
 
-    val state = viewModel.getStateObservable()
-        .subscribeAsState(initial = SearchScreenState.Init()).value
+    val state = viewModel.getStateFlow().value
+
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(

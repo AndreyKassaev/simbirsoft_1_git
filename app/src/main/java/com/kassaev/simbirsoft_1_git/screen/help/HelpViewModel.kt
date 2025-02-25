@@ -1,75 +1,38 @@
 package com.kassaev.simbirsoft_1_git.screen.help
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepository
-import com.kassaev.simbirsoft_1_git.util.RxJavaTask
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class HelpViewModel(
     private val categoryRepository: CategoryRepository,
-    private val rxJavaTask: RxJavaTask
 ): ViewModel() {
 
-    private val stateSubject = BehaviorSubject.createDefault<HelpScreenState>(HelpScreenState.Loading())
-    private val disposables = CompositeDisposable()
+    private val stateMutableFlow = MutableStateFlow<HelpScreenState>(HelpScreenState.Loading())
+    private val stateFlow: StateFlow<HelpScreenState> = stateMutableFlow
 
     init {
         loadCategories()
-        triggerRxJavaTask()
     }
 
-    fun getStateObservable(): Observable<HelpScreenState> = stateSubject.hide()
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-        rxJavaTask.clearDisposables()
-    }
-
-    private fun triggerRxJavaTask() {
-        val randomDataObservable = rxJavaTask.getRandomDataObservable()
-        val disposables = CompositeDisposable()
-        val randomDataObservableDisposable = randomDataObservable.subscribe(
-            { data -> Log.d("RX_THREAD_task", "Random data: $data") },
-            { error -> Log.e("RX_THREAD_task", "Error: ${error.localizedMessage}") }
-        )
-
-        val combinedObservable = rxJavaTask.combineObservables(
-            categoryRepository.getCategoryMapObservable(),
-            randomDataObservable
-        )
-
-        val combinedObservableDisposable = combinedObservable.subscribe(
-            { combinedData -> Log.d("RX_THREAD_task", "Combined Data: $combinedData") },
-            { error -> Log.e("RX_THREAD_task", "Error in combine: ${error.localizedMessage}") }
-        )
-        disposables.add(randomDataObservableDisposable)
-        disposables.add(combinedObservableDisposable)
-    }
+    fun getStateFlow() = stateFlow
 
     private fun loadCategories() {
-        val disposable = categoryRepository.getCategoryMapObservable()
-            .delay(5, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.computation())
-            .doOnNext { Log.d("RX_THREAD", "Processing data on: ${Thread.currentThread().name}") }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { data ->
-                    stateSubject.onNext(HelpScreenState.Success(data))
-                    Log.d("RX_THREAD", "Emitting result on: ${Thread.currentThread().name}")
-                },
-                { error ->
-                    stateSubject.onNext(HelpScreenState.Failure(error.message.toString()))
-                    Log.e("RX_THREAD", "Error on: ${Thread.currentThread().name}", error)
+        viewModelScope.launch {
+            categoryRepository.getCategoryMapFlow().collectLatest { categoryMap ->
+                if (categoryMap.isNotEmpty()) {
+                    stateMutableFlow.update {
+                        HelpScreenState.Success(
+                            data = categoryMap
+                        )
+                    }
                 }
-            )
-        disposables.add(disposable)
+            }
+        }
     }
 }
