@@ -11,7 +11,6 @@ import com.kassaev.simbirsoft_1_git.screen.help.HelpViewModel
 import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileViewModel
 import com.kassaev.simbirsoft_1_git.screen.search.SearchViewModel
-import com.kassaev.simbirsoft_1_git.util.RxJavaTask
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -20,7 +19,6 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -34,7 +32,6 @@ val appModule = module{
     singleOf(::EventRepositoryImpl) bind EventRepository::class
     singleOf(::CategoryRepositoryImpl) bind CategoryRepository::class
     viewModelOf(::AuthorizationViewModel)
-    singleOf(::RxJavaTask)
     single {
         HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -53,7 +50,6 @@ val appModule = module{
             .baseUrl("https://backend.kassaev.com/")
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(ApiService::class.java)
     }

@@ -1,7 +1,5 @@
 package com.kassaev.simbirsoft_1_git.api.model
 
-import kotlinx.serialization.Serializable
-
 data class EventRequest(
     val id: String = ""
 )

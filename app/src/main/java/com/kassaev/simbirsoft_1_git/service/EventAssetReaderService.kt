@@ -21,7 +21,6 @@ import org.koin.android.ext.android.inject
 class EventAssetReaderService: Service() {
     private val binder = LocalBinder()
     private val eventRepository: EventRepository by inject()
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(1, createNotification())
@@ -29,11 +28,7 @@ class EventAssetReaderService: Service() {
         return START_STICKY
     }
 
-    fun readFile() =
-        scope.async {
-            delay(5000L)
-            eventRepository.getEventList()
-        }
+    fun readFile() = eventRepository.getEventListFlow()
 
     override fun onUnbind(intent: Intent?): Boolean {
         stopSelf()

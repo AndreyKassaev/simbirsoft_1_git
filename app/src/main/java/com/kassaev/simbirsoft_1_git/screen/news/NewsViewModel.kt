@@ -12,7 +12,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.service.EventAssetReaderService
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -49,11 +48,12 @@ class NewsViewModel(
             eventAssetReaderService = binder.getService()
 
             viewModelScope.launch {
-                eventAssetReaderService?.readFile()?.await()?.let { assetList ->
-                    stateMutable.update {
-                        NewsScreenState.Success(data = assetList)
+                eventAssetReaderService?.readFile()?.collectLatest { eventList ->
+                    if (eventList.isNotEmpty()) {
+                        stateMutable.update {
+                            NewsScreenState.Success(data = eventList)
+                        }
                     }
-                    unBindService()
                 }
             }
         }
@@ -127,10 +127,6 @@ class NewsViewModel(
             context.startService(intent)
         }
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
-    }
-
-    private fun unBindService() {
-        context.unbindService(connection)
     }
 
     private fun updateUnWatchedNewsCount() {

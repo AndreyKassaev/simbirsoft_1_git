@@ -4,17 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -23,10 +17,8 @@ class SearchViewModel(
     private val eventRepository: EventRepository
 ) : ViewModel() {
 
-    private val disposables = CompositeDisposable()
-
-    private val stateSubject =
-        BehaviorSubject.createDefault<SearchScreenState>(SearchScreenState.Init())
+    private val stateMutableFlow = MutableStateFlow<SearchScreenState>(SearchScreenState.Init())
+    private val stateFlow: StateFlow<SearchScreenState> = stateMutableFlow
 
     private val searchValueMutable = MutableStateFlow("")
     private val searchValue: StateFlow<String> = searchValueMutable
@@ -35,9 +27,9 @@ class SearchViewModel(
         updateStateWithSearchQuery()
     }
 
-    fun getStateObservable(): Observable<SearchScreenState> = stateSubject.hide()
+    fun getStateFlow() = stateFlow
 
-    fun getSearchValue() = searchValue
+    fun getSearchValueFlow() = searchValue
 
     fun setSearchValue(value: String) {
         viewModelScope.launch {
@@ -47,56 +39,44 @@ class SearchViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
-    }
-
     private fun updateStateWithSearchQuery() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             searchValue.debounce(500L).collectLatest { searchText ->
                 val trimmedSearchText = searchText.trim().replace(Regex("\\s+"), " ")
                 if (trimmedSearchText.isEmpty()) {
-                    stateSubject.onNext(SearchScreenState.Init())
+                    stateMutableFlow.update {
+                        SearchScreenState.Init()
+                    }
                 } else {
                     val currKeywordList = if (trimmedSearchText.contains(" ")) {
                         trimmedSearchText.split(" ")
                     } else {
                         listOf(trimmedSearchText)
                     }
-                    val disposable = eventRepository.getEventListObservable()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.computation())
-                        .subscribe(
-                            { eventList ->
-                                val filteredEventList = mutableSetOf<Event>()
+                    eventRepository.getEventListFlow().collectLatest { eventList ->
+                        val filteredEventList = mutableSetOf<Event>()
 
-                                currKeywordList.forEach { word ->
-                                    eventList.find { event ->
-                                        event.title.contains(word, ignoreCase = true)
-                                    }?.let { foundEvent ->
-                                        filteredEventList.add(foundEvent)
-                                    }
-                                }
-
-                                stateSubject.onNext(
-                                    if (filteredEventList.isNotEmpty()) {
-                                        SearchScreenState.Success(
-                                            data = SearchScreenData.default.copy(
-                                                eventList = filteredEventList.toList(),
-                                                keywordList = currKeywordList
-                                            )
-                                        )
-                                    } else {
-                                        SearchScreenState.Empty()
-                                    }
-                                )
-                            },
-                            { error ->
-                                stateSubject.onNext(SearchScreenState.Failure(error.message.toString()))
+                        currKeywordList.forEach { word ->
+                            eventList.find { event ->
+                                event.title.contains(word, ignoreCase = true)
+                            }?.let { foundEvent ->
+                                filteredEventList.add(foundEvent)
                             }
-                        )
-                    disposables.add(disposable)
+                        }
+
+                        stateMutableFlow.update {
+                            if (filteredEventList.isNotEmpty()) {
+                                SearchScreenState.Success(
+                                    data = SearchScreenData.default.copy(
+                                        eventList = filteredEventList.toList(),
+                                        keywordList = currKeywordList
+                                    )
+                                )
+                            } else {
+                                SearchScreenState.Empty()
+                            }
+                        }
+                    }
                 }
             }
         }

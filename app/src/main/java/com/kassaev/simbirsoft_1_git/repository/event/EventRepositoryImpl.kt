@@ -6,68 +6,51 @@ import com.kassaev.simbirsoft_1_git.api.model.EventRequest
 import com.kassaev.simbirsoft_1_git.util.EventAsset
 import com.kassaev.simbirsoft_1_git.util.EventMapper.apiListToUiList
 import com.kassaev.simbirsoft_1_git.util.EventMapper.assetListToUiList
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import com.kassaev.simbirsoft_1_git.util.Event as UiEvent
-import io.reactivex.rxjava3.core.Observable
-import com.kassaev.simbirsoft_1_git.api.model.Event as ApiEvent
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import com.kassaev.simbirsoft_1_git.util.Event as UiEvent
 
 class EventRepositoryImpl(
     private val assetManager: AssetManager,
     private val apiService: ApiService,
 ) : EventRepository {
 
-    private var eventList = emptyList<UiEvent>()
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private val compositeDisposable = CompositeDisposable()
-    private val eventListSubject: BehaviorSubject<List<UiEvent>> =
-        BehaviorSubject.create()
-    private val eventListObservable: Observable<List<UiEvent>> = eventListSubject.hide()
+    private val eventListMutableFlow = MutableStateFlow<List<UiEvent>>(emptyList())
+    private val eventListFlow: StateFlow<List<UiEvent>> = eventListMutableFlow
 
     init {
         fetchEvents()
     }
 
-    override fun getEvents(categoryId: String): Single<List<ApiEvent>> {
-        return apiService.getEvents(EventRequest(categoryId))
-    }
-
-    override fun getEventListObservable(): Observable<List<UiEvent>> = eventListObservable
-
-    override fun getEventList(): List<UiEvent> {
-        if (eventList.isEmpty()) {
-            eventList = loadEventListFromAssets()
-        }
-        return eventList
-    }
+    override fun getEventListFlow() = eventListFlow
 
     override fun getEventById(id: String): UiEvent?{
-        return try {
-            val eventList = eventListObservable.blockingFirst()
-            eventList.find { it.id == id }
-        } catch (e: Exception) {
-            loadEventListFromAssets().find { it.id == id }
-        }
+        return eventListFlow.value.find { it.id == id }
     }
 
     private fun fetchEvents(id: String = "") {
-        val disposable = apiService.getEvents(EventRequest(id = id))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { eventList ->
-                    eventListSubject.onNext(
-                        apiListToUiList(eventList)
-                    )
-                }, { error ->
-                    eventListSubject.onNext(loadEventListFromAssets())
+        scope.launch {
+            runCatching {
+                apiService.getEvents(request = EventRequest(id = id))
+            }.onSuccess { eventList ->
+                eventListMutableFlow.update {
+                    apiListToUiList(eventList)
                 }
-            )
-        compositeDisposable.add(disposable)
+            }.onFailure {
+                eventListMutableFlow.update {
+                    loadEventListFromAssets()
+                }
+            }
+        }
     }
 
     private fun loadEventListFromAssets(): List<UiEvent> {
