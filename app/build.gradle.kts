@@ -72,14 +72,10 @@ dependencies {
     //Retrofit
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
     implementation(libs.retrofit)
-    // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava3
-    implementation(libs.adapter.rxjava3)
     // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
     implementation(libs.retrofit2.converter.gson)
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
     implementation(libs.logging.interceptor)
-
-
 
     //Compose Navigation
     // https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
@@ -102,13 +98,4 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // https://coil-kt.github.io/coil/gifs/
     implementation(libs.coil.gif)
-
-    //RxJava
-    // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava
-    implementation(libs.rxjava)
-    // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxandroid
-    implementation(libs.rxandroid)
-    // https://mvnrepository.com/artifact/androidx.compose.runtime/runtime-rxjava3
-    implementation(libs.androidx.runtime.rxjava3)
-
 }
