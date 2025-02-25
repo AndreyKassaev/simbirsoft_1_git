@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -42,16 +41,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
-import com.kassaev.simbirsoft_1_git.screen.search.SearchScreenState
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.LightGreyTwo
 import com.kassaev.simbirsoft_1_git.ui.theme.White
+import com.kassaev.simbirsoft_1_git.util.Category
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
-import com.kassaev.simbirsoft_1_git.util.HelpCategory
+import com.kassaev.simbirsoft_1_git.util.capitalizeFirstLetter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.koin.androidx.compose.koinViewModel
 
@@ -82,7 +80,7 @@ fun HelpScreen(
     when(state) {
         is HelpScreenState.Success -> {
             HelpScreenSuccess(
-                categoryList = state.data
+                categoryMap = state.data
             )
         }
         is HelpScreenState.Failure -> {
@@ -143,7 +141,7 @@ fun HelpScreenFailure() {
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun HelpScreenSuccess(
-    categoryList: List<HelpCategory>,
+    categoryMap: Map<String, Category>,
 ) {
     var gridHeight by remember {
         mutableStateOf(0.dp)
@@ -165,7 +163,7 @@ fun HelpScreenSuccess(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
-            items(categoryList.chunked(2)) { chunkedCategoryList ->
+            items(categoryMap.values.chunked(2)) { chunkedCategoryList ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -182,13 +180,13 @@ fun HelpScreenSuccess(
                                 gridHeight = maxWidth
                             }
                             AsyncImage(
-                                model = category.imageUrl,
-                                contentDescription = category.title,
+                                model = category.image,
+                                contentDescription = category.name,
                                 modifier = Modifier
                                     .align(Alignment.Center)
                             )
                             Text(
-                                text = category.title,
+                                text = category.name.capitalizeFirstLetter(),
                                 color = Leaf,
                                 modifier = Modifier
                                     .align(Alignment.BottomCenter)

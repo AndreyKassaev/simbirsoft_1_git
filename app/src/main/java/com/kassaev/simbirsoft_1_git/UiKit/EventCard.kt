@@ -64,7 +64,7 @@ fun EventCard(
             }
     ) {
         AsyncImage(
-            model = event.imageUrl,
+            model = event.imageUrlList.firstOrNull(),
             contentDescription = event.description,
             modifier = Modifier
                 .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
@@ -76,9 +76,9 @@ fun EventCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp) // Adjust height for more/less blur
+                .height(150.dp)
                 .align(Alignment.BottomCenter)
-                .blur(16.dp) // Apply blur effect
+                .blur(16.dp)
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(Color.Transparent, Color.White),

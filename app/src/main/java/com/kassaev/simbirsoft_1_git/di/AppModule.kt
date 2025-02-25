@@ -1,5 +1,6 @@
 package com.kassaev.simbirsoft_1_git.di
 
+import com.kassaev.simbirsoft_1_git.api.ApiService
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepository
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepositoryImpl
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
@@ -11,16 +12,22 @@ import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileViewModel
 import com.kassaev.simbirsoft_1_git.screen.search.SearchViewModel
 import com.kassaev.simbirsoft_1_git.util.RxJavaTask
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val appModule = module{
     viewModelOf(::ProfileViewModel)
     singleOf(::HelpViewModel)
-    singleOf(::SearchViewModel)
+    viewModelOf(::SearchViewModel)
     singleOf(::NewsViewModel)
     viewModelOf(::EventDetailViewModel)
     single { androidContext().assets }
@@ -28,4 +35,26 @@ val appModule = module{
     singleOf(::CategoryRepositoryImpl) bind CategoryRepository::class
     viewModelOf(::AuthorizationViewModel)
     singleOf(::RxJavaTask)
+    single {
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+    single {
+        OkHttpClient.Builder()
+            .addInterceptor(get<HttpLoggingInterceptor>())
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
+    }
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://backend.kassaev.com/")
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
 }
