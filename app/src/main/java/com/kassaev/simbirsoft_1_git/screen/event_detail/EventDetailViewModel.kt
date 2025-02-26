@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.kassaev.simbirsoft_1_git.navigation.Router
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
-import com.kassaev.simbirsoft_1_git.util.Event
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,21 +17,26 @@ class EventDetailViewModel(
     private val eventRepository: EventRepository
 ): ViewModel() {
 
-    private val eventMutable = MutableStateFlow<Event?>(null)
-    private val event: StateFlow<Event?> = eventMutable
+    private val stateFlowMutable = MutableStateFlow<EventDetailScreenState>(EventDetailScreenState.Loading())
+    private val stateFlow: StateFlow<EventDetailScreenState> = stateFlowMutable
 
     init {
-        val eventId = savedStateHandle.toRoute<Router.EventDetail>().
-        eventId?.let { id ->
-            viewModelScope.launch {
-                eventMutable.update {
-                    getEventById(id = id)
+        viewModelScope.launch {
+            val eventId = savedStateHandle.toRoute<Router.EventDetail>().eventId
+            stateFlowMutable.update {
+                if (eventId != null) {
+                    EventDetailScreenState.Success(
+                        data = getEventById(id = eventId)
+                    )
+                } else {
+                    EventDetailScreenState.Error()
                 }
             }
+
         }
     }
 
-    fun getEventFlow() = event
+    fun getStateFlow() = stateFlow
 
     private suspend fun getEventById(id: String) = eventRepository.getEventById(id = id)
 

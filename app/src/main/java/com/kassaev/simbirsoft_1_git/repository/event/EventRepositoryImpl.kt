@@ -35,7 +35,7 @@ class EventRepositoryImpl(
     override fun getEventListFlow(): Flow<List<UiEvent>> =
         eventDao.getAll().map { dbListToUiList(it) }
 
-    override suspend fun getEventById(id: String): UiEvent? =
+    override suspend fun getEventById(id: String): UiEvent =
         dbToUi(eventDao.findAndMarkAsWatched(id = id))
 
     override fun findByAnyWord(query: SupportSQLiteQuery): Flow<List<UiEvent>> =
