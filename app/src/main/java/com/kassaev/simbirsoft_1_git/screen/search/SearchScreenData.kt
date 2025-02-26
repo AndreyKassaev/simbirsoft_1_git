@@ -6,13 +6,13 @@ import com.kassaev.simbirsoft_1_git.util.Npo
 data class SearchScreenData(
     val eventList: List<Event>,
     val npoList: List<Npo>,
-    val keywordList: List<String>,
+    val keywordList: String,
 ) {
     companion object {
         val default = SearchScreenData(
             eventList = emptyList(),
             npoList = emptyList(),
-            keywordList = emptyList()
+            keywordList = ""
         )
     }
 }
