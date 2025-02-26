@@ -2,54 +2,49 @@ package com.kassaev.simbirsoft_1_git.repository.category
 
 import android.content.res.AssetManager
 import com.kassaev.simbirsoft_1_git.api.ApiService
-import com.kassaev.simbirsoft_1_git.util.CategoryMapper.mapApiToUi
+import com.kassaev.simbirsoft_1_git.database.dao.CategoryDao
+import com.kassaev.simbirsoft_1_git.util.CategoryMapper.apiMapToDbList
+import com.kassaev.simbirsoft_1_git.util.CategoryMapper.assetMapToDbList
+import com.kassaev.simbirsoft_1_git.util.CategoryMapper.dbListToUiMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import com.kassaev.simbirsoft_1_git.util.Category as UiCategory
+import com.kassaev.simbirsoft_1_git.util.CategoryAsset as AssetCategory
 
 class CategoryRepositoryImpl(
     private val assetManager: AssetManager,
     private val apiService: ApiService,
+    private val categoryDao: CategoryDao
 ) : CategoryRepository {
 
     val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-
-    private val categoryMapMutableFlow = MutableStateFlow<Map<String, UiCategory>>(emptyMap())
-    private val categoryMapFlow: StateFlow<Map<String, UiCategory>> = categoryMapMutableFlow
 
     init {
         fetchCategories()
     }
 
-    override fun getCategoryMapFlow() = categoryMapFlow
+    override fun getCategoryMapFlow() = categoryDao.getAll().map { dbListToUiMap(it) }
 
     private fun fetchCategories() {
         scope.launch {
             runCatching {
                 apiService.getCategories()
             }.onSuccess{ categoryMap ->
-                categoryMapMutableFlow.update {
-                    mapApiToUi(categoryMap)
-                }
+                categoryDao.insertAll(apiMapToDbList(categoryMap))
             }.onFailure {
-                categoryMapMutableFlow.update {
-                    loadCategoryMapFromAssets()
-                }
+                categoryDao.insertAll(assetMapToDbList(loadCategoryMapFromAssets()))
             }
         }
     }
 
-    private fun loadCategoryMapFromAssets(): Map<String, UiCategory> {
+    private fun loadCategoryMapFromAssets(): Map<String, AssetCategory> {
         return try {
             val inputStream = assetManager.open("categories.json")
             val json = inputStream.bufferedReader().use { it.readText() }
-            Json.decodeFromString(json)
+            Json.decodeFromString<Map<String,AssetCategory>>(json)
         } catch (e: Exception) {
             e.printStackTrace()
             emptyMap()

@@ -20,7 +20,7 @@ import com.kassaev.simbirsoft_1_git.ui.theme.LightGrey
 
 @Composable
 fun SearchResultMeta(
-    keywordList: List<String>,
+    keywordList: String,
     amount: String
 ) {
     Column(
@@ -36,7 +36,7 @@ fun SearchResultMeta(
                 color = CharcoalGrey
             )
             Text(
-                text = keywordList.joinToString(", "),
+                text = keywordList,
                 color = CharcoalGreyLight,
             )
         }

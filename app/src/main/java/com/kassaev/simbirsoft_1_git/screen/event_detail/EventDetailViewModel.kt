@@ -33,6 +33,6 @@ class EventDetailViewModel(
 
     fun getEventFlow() = event
 
-    private fun getEventById(id: String) = eventRepository.getEventById(id = id)
+    private suspend fun getEventById(id: String) = eventRepository.getEventById(id = id)
 
 }

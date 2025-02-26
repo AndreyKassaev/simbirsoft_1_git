@@ -1,6 +1,8 @@
 package com.kassaev.simbirsoft_1_git.di
 
+import androidx.room.Room
 import com.kassaev.simbirsoft_1_git.api.ApiService
+import com.kassaev.simbirsoft_1_git.database.Database
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepository
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepositoryImpl
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
@@ -52,5 +54,14 @@ val appModule = module{
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
+    }
+    single {
+        Room.databaseBuilder(get(), Database::class.java, "app.db").build()
+    }
+    single {
+        get<Database>().eventDao()
+    }
+    single {
+        get<Database>().categoryDao()
     }
 }

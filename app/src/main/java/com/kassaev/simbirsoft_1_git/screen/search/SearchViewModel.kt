@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
+import com.kassaev.simbirsoft_1_git.util.getSearchQuery
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +25,7 @@ class SearchViewModel(
     private val searchValue: StateFlow<String> = searchValueMutable
 
     init {
-        updateStateWithSearchQuery()
+        updateStateWithSearchQuery2()
     }
 
     fun getStateFlow() = stateFlow
@@ -39,37 +40,21 @@ class SearchViewModel(
         }
     }
 
-    private fun updateStateWithSearchQuery() {
+    private fun updateStateWithSearchQuery2() {
         viewModelScope.launch {
             searchValue.debounce(500L).collectLatest { searchText ->
-                val trimmedSearchText = searchText.trim().replace(Regex("\\s+"), " ")
-                if (trimmedSearchText.isEmpty()) {
+                if (searchText.isEmpty()) {
                     stateMutableFlow.update {
                         SearchScreenState.Init()
                     }
                 } else {
-                    val currKeywordList = if (trimmedSearchText.contains(" ")) {
-                        trimmedSearchText.split(" ")
-                    } else {
-                        listOf(trimmedSearchText)
-                    }
-                    eventRepository.getEventListFlow().collectLatest { eventList ->
-                        val filteredEventList = mutableSetOf<Event>()
-
-                        currKeywordList.forEach { word ->
-                            eventList.find { event ->
-                                event.title.contains(word, ignoreCase = true)
-                            }?.let { foundEvent ->
-                                filteredEventList.add(foundEvent)
-                            }
-                        }
-
+                    eventRepository.findByAnyWord(query = getSearchQuery(searchText)).collectLatest { foundEventList ->
                         stateMutableFlow.update {
-                            if (filteredEventList.isNotEmpty()) {
+                            if (foundEventList.isNotEmpty()) {
                                 SearchScreenState.Success(
                                     data = SearchScreenData.default.copy(
-                                        eventList = filteredEventList.toList(),
-                                        keywordList = currKeywordList
+                                        eventList = foundEventList,
+                                        keywordList = searchText.trim().replace(Regex("\\s+"), " ")
                                     )
                                 )
                             } else {
