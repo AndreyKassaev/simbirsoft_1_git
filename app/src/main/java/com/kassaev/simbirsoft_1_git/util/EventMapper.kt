@@ -2,6 +2,7 @@ package com.kassaev.simbirsoft_1_git.util
 
 import com.kassaev.simbirsoft_1_git.util.Event as UiEvent
 import com.kassaev.simbirsoft_1_git.api.model.Event as ApiEvent
+import com.kassaev.simbirsoft_1_git.database.entity.Event as DbEvent
 
 object EventMapper {
 
@@ -35,9 +36,71 @@ object EventMapper {
             )
         }
 
-    fun apiListToUiList(apiList: List<ApiEvent>): List<UiEvent> =
-        apiList.map { apiToUi(it) }
+    fun dbToUi(dbEvent: DbEvent): UiEvent =
+        with(dbEvent) {
+            UiEvent(
+                id = id,
+                description = description,
+                category = category,
+                imageUrlList = photos,
+                title = name,
+                timestamp = startDate,
+                organization = organization,
+                people = List(42) { getMockFriend() },
+                isWatched = isWatched
+            )
+        }
 
-    fun assetListToUiList(assetList: List<EventAsset>): List<UiEvent> =
-        assetList.map { assetToUi(it) }
+    fun apiToDb(apiEvent: ApiEvent): DbEvent =
+        with(apiEvent) {
+            DbEvent(
+                id = id,
+                name = name,
+                startDate = startDate,
+                endDate = endDate,
+                description = description,
+                status = status,
+                photos = photos,
+                category = category,
+                createdAt = createdAt,
+                phone = phone,
+                address = address,
+                organization = organization,
+                isWatched = false,
+            )
+        }
+
+    fun assetToDb(assetEvent: EventAsset): DbEvent =
+        with(assetEvent) {
+            DbEvent(
+                id = id,
+                name = name,
+                startDate = startDate,
+                endDate = endDate,
+                description = description,
+                status = status,
+                photos = photos,
+                category = category,
+                createdAt = createdAt,
+                phone = phone,
+                address = address,
+                organization = organization,
+                isWatched = false
+            )
+        }
+
+    fun apiListToUiList(apiEventList: List<ApiEvent>): List<UiEvent> =
+        apiEventList.map { apiToUi(it) }
+
+    fun assetListToUiList(assetEventList: List<EventAsset>): List<UiEvent> =
+        assetEventList.map { assetToUi(it) }
+
+    fun dbListToUiList(dbEventList: List<DbEvent>): List<UiEvent> =
+        dbEventList.map { dbToUi(it) }
+
+    fun apiListToDbList(apiEventList: List<ApiEvent>): List<DbEvent> =
+        apiEventList.map { apiToDb(it) }
+
+    fun assetListToDbList(assetEventList: List<EventAsset>): List<DbEvent> =
+        assetEventList.map { assetToDb(it) }
 }

@@ -21,5 +21,6 @@ data class Event(
     val createdAt: Long,
     val phone: String,
     val address: String,
-    val organization: String
+    val organization: String,
+    val isWatched: Boolean,
 )

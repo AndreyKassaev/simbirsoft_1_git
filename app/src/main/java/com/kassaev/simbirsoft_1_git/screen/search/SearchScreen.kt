@@ -84,7 +84,7 @@ fun SearchScreen(
 
     val searchValue by viewModel.getSearchValueFlow().collectAsStateWithLifecycle()
 
-    val state = viewModel.getStateFlow().value
+    val state by viewModel.getStateFlow().collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         setTopAppBar {
@@ -131,7 +131,7 @@ fun SearchScreen(
                 SearchScreenLoading()
             }
             is SearchScreenState.Success -> {
-                SearchScreenSuccess(state, selectedTabIndex, pagerState)
+                SearchScreenSuccess(state as SearchScreenState.Success, selectedTabIndex, pagerState)
             }
         }
     }
