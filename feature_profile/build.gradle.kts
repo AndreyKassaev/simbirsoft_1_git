@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -30,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
@@ -40,4 +46,33 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+    //Module
+    implementation(project(":core"))
+
+    //Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.material3)
+
+    //Compose Navigation
+    // https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
+    implementation(libs.androidx.navigation.compose)
+
+    //Hilt - DI, to deal with stavedStateHandle
+    // https://mvnrepository.com/artifact/androidx.hilt/hilt-navigation-compose
+    implementation(libs.androidx.hilt.navigation.compose)
+    // https://mvnrepository.com/artifact/com.google.dagger/hilt-android
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Coil
+    //https://coil-kt.github.io/coil/compose/
+    implementation(libs.coil.compose)
+    //By default, Coil 3.x does not include support for loading images from the network.
+    implementation(libs.coil.network.okhttp)
+    // https://coil-kt.github.io/coil/gifs/
+    implementation(libs.coil.gif)
 }

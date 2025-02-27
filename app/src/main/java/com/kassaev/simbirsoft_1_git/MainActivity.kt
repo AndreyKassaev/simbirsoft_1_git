@@ -10,7 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.kassaev.simbirsoft_1_git.navigation.Navigation
-import com.kassaev.simbirsoft_1_git.ui.theme.Simbirsoft_1_gitTheme
+import com.kassaev.simbirsoft_1_git.core.ui.theme.Simbirsoft_1_gitTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 const val SPLASH_SCREEN_DELAY = 1500L

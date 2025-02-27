@@ -3,6 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("plugin.serialization") version "2.1.10"
     alias(libs.plugins.kotlin.compose)
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
 android {
@@ -35,6 +39,9 @@ android {
     buildFeatures {
         compose = true
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -59,4 +66,33 @@ dependencies {
     //Serialization
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm
     implementation(libs.kotlinx.serialization.json)
+
+    //Hilt - DI, to deal with stavedStateHandle
+    // https://mvnrepository.com/artifact/androidx.hilt/hilt-navigation-compose
+    implementation(libs.androidx.hilt.navigation.compose)
+    // https://mvnrepository.com/artifact/com.google.dagger/hilt-android
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    //Retrofit
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    implementation(libs.retrofit)
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    implementation(libs.retrofit2.converter.gson)
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+    implementation(libs.logging.interceptor)
+
+
+    //Coil
+    //https://coil-kt.github.io/coil/compose/
+    implementation(libs.coil.compose)
+    //By default, Coil 3.x does not include support for loading images from the network.
+    implementation(libs.coil.network.okhttp)
+    // https://coil-kt.github.io/coil/gifs/
+    implementation(libs.coil.gif)
 }
