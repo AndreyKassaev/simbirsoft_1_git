@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.EventCard
@@ -58,14 +59,13 @@ import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import com.kassaev.simbirsoft_1_git.util.Npo
 import com.kassaev.simbirsoft_1_git.util.SearchTabItem
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: SearchViewModel = koinViewModel()
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val tabList = listOf(
         SearchTabItem(

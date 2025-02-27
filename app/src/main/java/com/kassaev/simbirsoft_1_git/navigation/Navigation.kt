@@ -10,10 +10,13 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,6 +28,7 @@ import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailScreen
 import com.kassaev.simbirsoft_1_git.screen.help.HelpScreen
 import com.kassaev.simbirsoft_1_git.screen.history.HistoryScreen
 import com.kassaev.simbirsoft_1_git.screen.news.NewsScreen
+import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileScreen
 import com.kassaev.simbirsoft_1_git.screen.search.SearchScreen
 
@@ -41,6 +45,8 @@ fun Navigation() {
         mutableStateOf<@Composable () -> Unit>({})
     }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val newsScreenViewModel: NewsViewModel = hiltViewModel()
+    val unWatchedNewsCount by newsScreenViewModel.getUnWatchedNewsCountFlow().collectAsStateWithLifecycle()
 
     CompositionLocalProvider(
         LocalNavController provides navController,
@@ -53,7 +59,7 @@ fun Navigation() {
                 topAppBar()
             },
             bottomBar = {
-                BottomBar()
+                BottomBar(unWatchedNewsCount = unWatchedNewsCount)
             },
             floatingActionButton = {
                 FAB()
@@ -63,12 +69,13 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Help
+                startDestination = Router.Authorization
             ) {
                 composable<Router.News> {
                     NewsScreen(
                         setTopAppBar = setTopAppBar,
                         scrollBehavior = scrollBehavior,
+                        viewModel = newsScreenViewModel
                     )
                 }
                 composable<Router.Search> {

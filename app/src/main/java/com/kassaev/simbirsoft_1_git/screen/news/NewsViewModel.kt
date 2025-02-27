@@ -12,6 +12,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.service.EventAssetReaderService
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,10 +22,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModel(
+@HiltViewModel
+class NewsViewModel @Inject constructor(
     private val application: Application,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : AndroidViewModel(application) {
 
     private val stateMutable = MutableStateFlow<NewsScreenState>(NewsScreenState.Loading())

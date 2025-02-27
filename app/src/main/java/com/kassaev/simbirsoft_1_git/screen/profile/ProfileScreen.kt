@@ -5,15 +5,15 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kassaev.simbirsoft_1_git.util.ProfileScreenState
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
-    viewModel: ProfileViewModel = koinViewModel(),
+    viewModel: ProfileViewModel = hiltViewModel(),
     scrollBehavior: TopAppBarScrollBehavior
 ) {
 
