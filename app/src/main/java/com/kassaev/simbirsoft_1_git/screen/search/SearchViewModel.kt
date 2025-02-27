@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.getSearchQuery
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,9 +13,11 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val eventRepository: EventRepository
 ) : ViewModel() {
 

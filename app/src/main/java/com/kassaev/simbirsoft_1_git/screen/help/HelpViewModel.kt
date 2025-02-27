@@ -3,13 +3,16 @@ package com.kassaev.simbirsoft_1_git.screen.help
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.repository.category.CategoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HelpViewModel(
+@HiltViewModel
+class HelpViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
 ): ViewModel() {
 

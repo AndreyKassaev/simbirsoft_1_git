@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
@@ -52,14 +53,13 @@ import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.FilterSwitchState
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: NewsViewModel = koinViewModel(),
+    viewModel: NewsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
     val filterState by viewModel.getFilterSwitchStateFlow().collectAsStateWithLifecycle()

@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.1.10"
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
+    id("androidx.room")
 }
 
 android {
@@ -46,6 +49,9 @@ android {
             }
         }
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -86,12 +92,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm
     implementation(libs.kotlinx.serialization.json)
 
-    //Koin DI
-    // https://mvnrepository.com/artifact/io.insert-koin/koin-android
-    implementation(libs.koin.android)
-    // https://mvnrepository.com/artifact/io.insert-koin/koin-androidx-compose
-    implementation(libs.koin.androidx.compose)
-
     //Coil
     //https://coil-kt.github.io/coil/compose/
     implementation(libs.coil.compose)
@@ -105,4 +105,17 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //Dagger - DI
+    // https://mvnrepository.com/artifact/com.google.dagger/dagger-android
+    implementation(libs.dagger.android)
+    // https://mvnrepository.com/artifact/com.google.dagger/dagger-compiler
+    kapt(libs.dagger.compiler)
+
+
+    //Hilt - DI, to deal with stavedStateHandle
+    // https://mvnrepository.com/artifact/androidx.hilt/hilt-navigation-compose
+    implementation(libs.androidx.hilt.navigation.compose)
+    // https://mvnrepository.com/artifact/com.google.dagger/hilt-android
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

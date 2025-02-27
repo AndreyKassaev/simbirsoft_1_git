@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.TextField
@@ -48,14 +49,13 @@ import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthorizationScreen(
     setTopAppBar: (@Composable (() -> Unit)) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: AuthorizationViewModel = koinViewModel()
+    viewModel: AuthorizationViewModel = hiltViewModel()
 ) {
     val navController = LocalNavController.current
     val context = LocalContext.current
