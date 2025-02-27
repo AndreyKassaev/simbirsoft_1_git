@@ -18,9 +18,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
-import com.kassaev.simbirsoft_1_git.navigation.Router
-import com.kassaev.simbirsoft_1_git.navigation.Router.Authorization
-import com.kassaev.simbirsoft_1_git.navigation.Router.EventDetail
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
+import com.kassaev.simbirsoft_1_git.core.navigation.Router.Authorization
+import com.kassaev.simbirsoft_1_git.core.navigation.Router.EventDetail
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.Melon
 

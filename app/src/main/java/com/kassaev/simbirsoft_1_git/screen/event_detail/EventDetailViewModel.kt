@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

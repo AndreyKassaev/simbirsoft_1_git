@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
-import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
 import com.kassaev.simbirsoft_1_git.ui.theme.BlueGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.DarkSlateBlue
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf

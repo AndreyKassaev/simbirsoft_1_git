@@ -1,4 +1,4 @@
-package com.kassaev.simbirsoft_1_git.screen.history
+package com.kassaev.simbirsoft_1_git.feature.history.ui.screen
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -13,15 +13,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import coil3.compose.AsyncImage
-import com.kassaev.simbirsoft_1_git.R
-import com.kassaev.simbirsoft_1_git.ui.theme.White
-import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
+import com.kassaev.simbirsoft_1_git.core.R
+import com.kassaev.simbirsoft_1_git.core.ui.theme.White
+import com.kassaev.simbirsoft_1_git.core.util.GetTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

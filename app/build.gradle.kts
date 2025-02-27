@@ -118,4 +118,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.dagger/hilt-android
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    //Module
+    implementation(project(":feature_history"))
+    implementation(project(":core"))
 }

@@ -44,7 +44,7 @@ import com.kassaev.simbirsoft_1_git.R
 import com.kassaev.simbirsoft_1_git.UiKit.TextField
 import com.kassaev.simbirsoft_1_git.UiKit.TextFieldPassword
 import com.kassaev.simbirsoft_1_git.navigation.LocalNavController
-import com.kassaev.simbirsoft_1_git.navigation.Router
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
 import com.kassaev.simbirsoft_1_git.ui.theme.CharcoalGrey
 import com.kassaev.simbirsoft_1_git.ui.theme.Leaf
 import com.kassaev.simbirsoft_1_git.ui.theme.White

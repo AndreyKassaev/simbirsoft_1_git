@@ -23,14 +23,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kassaev.simbirsoft_1_git.UiKit.BottomBar
 import com.kassaev.simbirsoft_1_git.UiKit.FAB
+import com.kassaev.simbirsoft_1_git.feature.history.navigation.historyNavGraph
 import com.kassaev.simbirsoft_1_git.screen.authorization.AuthorizationScreen
 import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailScreen
 import com.kassaev.simbirsoft_1_git.screen.help.HelpScreen
-import com.kassaev.simbirsoft_1_git.screen.history.HistoryScreen
 import com.kassaev.simbirsoft_1_git.screen.news.NewsScreen
 import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
 import com.kassaev.simbirsoft_1_git.screen.profile.ProfileScreen
 import com.kassaev.simbirsoft_1_git.screen.search.SearchScreen
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
 
 val LocalNavController = compositionLocalOf<NavController> {
     error("No NavController found!")
@@ -69,7 +70,7 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Authorization
+                startDestination = Router.History
             ) {
                 composable<Router.News> {
                     NewsScreen(
@@ -90,12 +91,10 @@ fun Navigation() {
                         scrollBehavior = scrollBehavior,
                     )
                 }
-                composable<Router.History> {
-                    HistoryScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior
-                    )
-                }
+                historyNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                )
                 composable<Router.Profile> {
                     ProfileScreen(
                         setTopAppBar = setTopAppBar,

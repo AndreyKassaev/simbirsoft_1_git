@@ -1,4 +1,4 @@
-package com.kassaev.simbirsoft_1_git.navigation
+package com.kassaev.simbirsoft_1_git.core.navigation
 
 import kotlinx.serialization.Serializable
 
