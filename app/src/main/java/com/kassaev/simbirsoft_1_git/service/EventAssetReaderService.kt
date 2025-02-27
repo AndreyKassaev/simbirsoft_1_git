@@ -10,17 +10,21 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.kassaev.simbirsoft_1_git.R
+import com.kassaev.simbirsoft_1_git.di.DaggerEntryPoint
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import org.koin.android.ext.android.inject
+import dagger.hilt.android.EntryPointAccessors
 
 class EventAssetReaderService: Service() {
+
     private val binder = LocalBinder()
-    private val eventRepository: EventRepository by inject()
+
+    lateinit var eventRepository: EventRepository
+
+    override fun onCreate() {
+        super.onCreate()
+        val entryPoint = EntryPointAccessors.fromApplication(applicationContext, DaggerEntryPoint::class.java)
+        eventRepository = entryPoint.eventRepository()
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(1, createNotification())
@@ -38,7 +42,7 @@ class EventAssetReaderService: Service() {
     private fun createNotification(): Notification {
         val channelId = "EventAssetReaderChannel"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, "Event Asset Reader", NotificationManager.IMPORTANCE_HIGH)
+            val channel = NotificationChannel(channelId, "Event Asset Reader", NotificationManager.IMPORTANCE_LOW)
             getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
         return NotificationCompat.Builder(this, channelId)

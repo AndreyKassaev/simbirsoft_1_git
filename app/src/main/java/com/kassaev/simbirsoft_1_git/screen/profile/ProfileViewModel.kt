@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.model.Profile
 import com.kassaev.simbirsoft_1_git.util.ProfileScreenState
 import com.kassaev.simbirsoft_1_git.util.getMockProfile
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProfileViewModel: ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(): ViewModel() {
 
     private val stateMutable = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Preview)
     private val state: StateFlow<ProfileScreenState> = stateMutable

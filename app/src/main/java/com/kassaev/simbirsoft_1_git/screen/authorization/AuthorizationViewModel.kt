@@ -2,15 +2,18 @@ package com.kassaev.simbirsoft_1_git.screen.authorization
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
-class AuthorizationViewModel: ViewModel() {
+@HiltViewModel
+class AuthorizationViewModel @Inject constructor(): ViewModel() {
 
     private val credentialsFlowMutable = MutableStateFlow<Credentials>(Credentials.default)
     private val credentialsFlow: StateFlow<Credentials> = credentialsFlowMutable

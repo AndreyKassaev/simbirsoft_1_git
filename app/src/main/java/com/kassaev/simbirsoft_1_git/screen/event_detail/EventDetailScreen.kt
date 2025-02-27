@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -35,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
@@ -46,15 +46,13 @@ import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.Event
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import com.kassaev.simbirsoft_1_git.util.timestamFormatter
-import org.koin.androidx.compose.koinViewModel
-import kotlin.compareTo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailScreen(
     setTopAppBar: (@Composable (() -> Unit)) -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
-    viewModel: EventDetailViewModel = koinViewModel()
+    viewModel: EventDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.getStateFlow().collectAsStateWithLifecycle()
 

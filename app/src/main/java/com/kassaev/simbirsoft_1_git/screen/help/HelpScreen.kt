@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.kassaev.simbirsoft_1_git.R
@@ -50,7 +51,6 @@ import com.kassaev.simbirsoft_1_git.ui.theme.White
 import com.kassaev.simbirsoft_1_git.util.Category
 import com.kassaev.simbirsoft_1_git.util.GetTopAppBar
 import com.kassaev.simbirsoft_1_git.util.capitalizeFirstLetter
-import org.koin.androidx.compose.koinViewModel
 
 private const val GRID_SIZE = 2
 
@@ -59,7 +59,7 @@ private const val GRID_SIZE = 2
 @Composable
 fun HelpScreen(
     setTopAppBar: (topAppBar: @Composable () -> Unit) -> Unit,
-    viewModel: HelpViewModel = koinViewModel(),
+    viewModel: HelpViewModel = hiltViewModel(),
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
     val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value

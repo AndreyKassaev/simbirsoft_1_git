@@ -6,13 +6,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.kassaev.simbirsoft_1_git.navigation.Router
 import com.kassaev.simbirsoft_1_git.repository.event.EventRepository
-import kotlinx.coroutines.delay
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EventDetailViewModel(
+@HiltViewModel
+class EventDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val eventRepository: EventRepository
 ): ViewModel() {
