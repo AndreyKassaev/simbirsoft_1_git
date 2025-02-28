@@ -74,7 +74,7 @@ fun Navigation() {
             NavHost(
                 modifier = Modifier.padding(innerPadding),
                 navController = navController,
-                startDestination = Router.Authorization
+                startDestination = Router.News
             ) {
                 newsNavGraph(
                     setTopAppBar = setTopAppBar,

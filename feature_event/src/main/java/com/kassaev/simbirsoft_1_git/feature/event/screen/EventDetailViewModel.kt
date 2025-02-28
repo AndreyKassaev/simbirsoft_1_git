@@ -22,6 +22,12 @@ class EventDetailViewModel @Inject constructor(
     private val stateFlowMutable = MutableStateFlow<EventDetailScreenState>(EventDetailScreenState.Loading())
     private val stateFlow: StateFlow<EventDetailScreenState> = stateFlowMutable
 
+    private val isDialogOpenFlowMutable = MutableStateFlow(false)
+    private val isDialogOpenFlow: StateFlow<Boolean> = isDialogOpenFlowMutable
+
+    private val donationAmountFlowMutable = MutableStateFlow("")
+    private val donationAmount: StateFlow<String> = donationAmountFlowMutable
+
     init {
         viewModelScope.launch {
             val eventId = savedStateHandle.toRoute<Router.EventDetail>().eventId
@@ -40,6 +46,21 @@ class EventDetailViewModel @Inject constructor(
 
     fun getStateFlow() = stateFlow
 
-    private suspend fun getEventById(id: String) = eventRepository.getEventById(id = id)
+    fun getIsDialogOpenFlow() = isDialogOpenFlow
 
+    fun getDonationAmount() = donationAmount
+
+    fun setDonationAmount(amount: String) {
+        donationAmountFlowMutable.update {
+            amount
+        }
+    }
+
+    fun setIsDialogOpen(bool: Boolean) {
+        isDialogOpenFlowMutable.update {
+            bool
+        }
+    }
+
+    private suspend fun getEventById(id: String) = eventRepository.getEventById(id = id)
 }

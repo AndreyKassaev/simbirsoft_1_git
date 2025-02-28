@@ -72,4 +72,6 @@
     <string name="empty">Пусто</string>
     <string name="master_class">мастер-класс</string>
     <string name="search_help">помощь</string>
+    <string name="amount">Сумма</string>
+    <string name="ruble">Рубль</string>
 </resources>
