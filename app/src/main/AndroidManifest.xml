@@ -52,6 +52,14 @@
             android:name=".feature.news.service.EventAssetReaderService"
             android:foregroundServiceType="dataSync"
             android:exported="false" />
+        <service
+            android:name=".feature.event.service.DonationReminderService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
+        <service
+            android:name=".feature.event.service.DonationService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.kassaev.simbirsoft_1_git.feature.event.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -83,7 +85,8 @@ fun EventDetailScreen(
                 setIsDialogOpen = viewModel::setIsDialogOpen,
                 isDialogOpen = isDialogOpen,
                 donationAmount = donationAmount,
-                setDonationAmount = viewModel::setDonationAmount
+                setDonationAmount = viewModel::setDonationAmount,
+                donate = viewModel::donate
             )
         }
         is EventDetailScreenState.Loading -> {
@@ -106,7 +109,9 @@ fun EventDetailScreenSuccess(
     isDialogOpen: Boolean,
     donationAmount: String,
     setDonationAmount: (String) -> Unit,
+    donate: () -> Unit
 ) {
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
@@ -196,7 +201,9 @@ fun EventDetailScreenSuccess(
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        //TODO workManager
+                        Toast.makeText(context, R.string.thanks, Toast.LENGTH_SHORT).show()
+                        setIsDialogOpen(false)
+                        donate()
                     },
                     modifier = Modifier
                         .fillMaxWidth(),

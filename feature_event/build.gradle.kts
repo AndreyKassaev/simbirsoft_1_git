@@ -74,4 +74,10 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // https://coil-kt.github.io/coil/gifs/
     implementation(libs.coil.gif)
+
+    //Worker
+    // https://mvnrepository.com/artifact/androidx.hilt/hilt-work
+    implementation("androidx.hilt:hilt-work:1.2.0")
+    // https://mvnrepository.com/artifact/androidx.work/work-runtime-ktx
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 }
