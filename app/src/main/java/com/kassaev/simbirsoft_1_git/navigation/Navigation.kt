@@ -19,18 +19,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.kassaev.simbirsoft_1_git.UiKit.BottomBar
-import com.kassaev.simbirsoft_1_git.UiKit.FAB
-import com.kassaev.simbirsoft_1_git.screen.authorization.AuthorizationScreen
-import com.kassaev.simbirsoft_1_git.screen.event_detail.EventDetailScreen
-import com.kassaev.simbirsoft_1_git.screen.help.HelpScreen
-import com.kassaev.simbirsoft_1_git.screen.history.HistoryScreen
-import com.kassaev.simbirsoft_1_git.screen.news.NewsScreen
-import com.kassaev.simbirsoft_1_git.screen.news.NewsViewModel
-import com.kassaev.simbirsoft_1_git.screen.profile.ProfileScreen
-import com.kassaev.simbirsoft_1_git.screen.search.SearchScreen
+import com.kassaev.simbirsoft_1_git.core.uikit.BottomBar
+import com.kassaev.simbirsoft_1_git.core.uikit.FAB
+import com.kassaev.simbirsoft_1_git.core.navigation.Router
+import com.kassaev.simbirsoft_1_git.feature.auth.navigation.authNavGraph
+import com.kassaev.simbirsoft_1_git.feature.event.navigation.eventNavGraph
+import com.kassaev.simbirsoft_1_git.feature.help.navigation.helpNavGraph
+import com.kassaev.simbirsoft_1_git.feature.history.navigation.historyNavGraph
+import com.kassaev.simbirsoft_1_git.feature.news.navigation.newsNavGraph
+import com.kassaev.simbirsoft_1_git.feature.news.screen.news.NewsViewModel
+import com.kassaev.simbirsoft_1_git.feature.profile.navigation.profileNavGraph
+import com.kassaev.simbirsoft_1_git.feature.search.navigation.searchNavGraph
 
 val LocalNavController = compositionLocalOf<NavController> {
     error("No NavController found!")
@@ -59,10 +59,15 @@ fun Navigation() {
                 topAppBar()
             },
             bottomBar = {
-                BottomBar(unWatchedNewsCount = unWatchedNewsCount)
+                BottomBar(
+                    unWatchedNewsCount = unWatchedNewsCount,
+                    navController = navController
+                )
             },
             floatingActionButton = {
-                FAB()
+                FAB(
+                    navController = navController
+                )
             },
             floatingActionButtonPosition = FabPosition.Center
         ) { innerPadding ->
@@ -71,49 +76,40 @@ fun Navigation() {
                 navController = navController,
                 startDestination = Router.Authorization
             ) {
-                composable<Router.News> {
-                    NewsScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior,
-                        viewModel = newsScreenViewModel
-                    )
-                }
-                composable<Router.Search> {
-                    SearchScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior,
-                    )
-                }
-                composable<Router.Help> {
-                    HelpScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior,
-                    )
-                }
-                composable<Router.History> {
-                    HistoryScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior
-                    )
-                }
-                composable<Router.Profile> {
-                    ProfileScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior
-                    )
-                }
-                composable<Router.EventDetail> {
-                    EventDetailScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior
-                    )
-                }
-                composable<Router.Authorization> {
-                    AuthorizationScreen(
-                        setTopAppBar = setTopAppBar,
-                        scrollBehavior = scrollBehavior
-                    )
-                }
+                newsNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                    viewModel = newsScreenViewModel,
+                    navController = navController,
+                )
+                searchNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                    navController = navController,
+                )
+                helpNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                    navController = navController,
+                )
+                historyNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                )
+                profileNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                )
+                eventNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                    navController = navController
+                )
+                authNavGraph(
+                    setTopAppBar = setTopAppBar,
+                    scrollBehavior = scrollBehavior,
+                    navController = navController
+                )
             }
         }
     }
