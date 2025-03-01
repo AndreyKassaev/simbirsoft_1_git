@@ -59,5 +59,6 @@
             android:foregroundServiceType="dataSync"
             android:exported="false" />
         <service android:name=".feature.event.service.BatteryChargingNotificationService"/>
+        <receiver android:name=".feature.event.receiver.NotificationReceiver" android:exported="false"/>
     </application>
 </manifest>

@@ -10,13 +10,12 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.kassaev.simbirsoft_1_git.core.R
-import com.kassaev.simbirsoft_1_git.feature.event.receiver.NotificationReceiver
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import androidx.core.net.toUri
 
 @HiltWorker
-class DonationWorker @AssistedInject constructor(
+class DonationReminderWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
@@ -24,19 +23,16 @@ class DonationWorker @AssistedInject constructor(
     override fun doWork(): Result {
         val eventId = inputData.getString("event_id") ?: return Result.failure()
         val eventName = inputData.getString("event_name") ?: return Result.failure()
-        val donationAmount = inputData.getString("donation_amount") ?: return Result.failure()
 
         createNotification(
             eventId = eventId,
             eventName = eventName,
-            donationAmount = donationAmount,
         )
 
         return Result.success()
     }
 
     private fun createNotification(
-        donationAmount: String,
         eventName: String,
         eventId: String,
     ) {
@@ -50,26 +46,17 @@ class DonationWorker @AssistedInject constructor(
         }
 
         val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_CANCEL_CURRENT
+            applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
-        val intentReminder = Intent(applicationContext, NotificationReceiver::class.java).apply {
-            putExtra("event_id", eventId)
-            putExtra("event_name", eventName)
-        }
-
-        val buttonPendingIntent = PendingIntent.getBroadcast(
-            applicationContext, 0, intentReminder, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_CANCEL_CURRENT
-        )
-
 
         val notification = NotificationCompat.Builder(applicationContext, "donation_channel")
             .setContentTitle(eventName)
-            .setContentText("Спасибо, что пожертвовали ${donationAmount} ₽! Будем очень признательны, если вы сможете пожертвовать еще больше.")
+            .setContentText("Напоминаем, что мы будем очень признательны, если вы сможете пожертвовать еще больше")
             .setSmallIcon(R.drawable.ruble)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .addAction(R.drawable.calendar, applicationContext.getString(R.string.remind_later), buttonPendingIntent)
+            .setAutoCancel(true)
+            .setOngoing(false)
             .build()
 
         notificationManager.notify(1, notification)

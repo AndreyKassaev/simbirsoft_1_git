@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.IBinder
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesOf
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
@@ -18,9 +17,7 @@ import com.kassaev.simbirsoft_1_git.feature.event.worker.DonationWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

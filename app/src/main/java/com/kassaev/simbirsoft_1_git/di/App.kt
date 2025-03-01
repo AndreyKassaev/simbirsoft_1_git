@@ -15,11 +15,18 @@ class App: Application() {
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
+            val channelDonation = NotificationChannel(
                 "donation_channel", "Donation Notifications",
                 NotificationManager.IMPORTANCE_LOW
             )
-            notificationManager.createNotificationChannel(channel)
+            val channelNews = NotificationChannel(
+                "news_channel",
+                "Event Asset Reader",
+                NotificationManager.IMPORTANCE_LOW
+            )
+
+            notificationManager.createNotificationChannel(channelNews)
+            notificationManager.createNotificationChannel(channelDonation)
         }
     }
 }

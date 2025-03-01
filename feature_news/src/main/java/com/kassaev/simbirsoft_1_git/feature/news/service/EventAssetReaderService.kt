@@ -27,7 +27,7 @@ class EventAssetReaderService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(1, createNotification())
+        startForeground(2, createNotification())
         readFile()
         return START_STICKY
     }
@@ -40,12 +40,7 @@ class EventAssetReaderService: Service() {
     }
 
     private fun createNotification(): Notification {
-        val channelId = "EventAssetReaderChannel"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, "Event Asset Reader", NotificationManager.IMPORTANCE_LOW)
-            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
-        }
-        return NotificationCompat.Builder(this, channelId)
+        return NotificationCompat.Builder(this, "news_channel")
             .setContentTitle(this.getString(R.string.loading))
             .setContentText(this.getString(R.string.loading))
             .setSmallIcon(R.drawable.downloading)
