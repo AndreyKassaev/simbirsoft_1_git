@@ -1,28 +1,33 @@
 package com.kassaev.simbirsoft_1_git.feature.event.screen
 
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.kassaev.simbirsoft_1_git.core.navigation.Router
 import com.kassaev.simbirsoft_1_git.core.repository.event.EventRepository
-import com.kassaev.simbirsoft_1_git.feature.event.worker.DonationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.work.Data
+import com.kassaev.simbirsoft_1_git.core.datastore.dataStore
 import com.kassaev.simbirsoft_1_git.core.util.Event
+import com.kassaev.simbirsoft_1_git.feature.event.service.Donation
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.serialization.json.Json
 
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     @Inject
@@ -83,18 +88,13 @@ class EventDetailViewModel @Inject constructor(
             eventFlowMutable.collectLatest { event ->
                 donationAmount.collectLatest { donationAmount ->
                     event?.let {
-//                        TODO() 0. create foreground service with dynamic broadcast receiver for battery charge, that checks sharedPrefs if battery is charging And launch foreground service if data exists. 1. save data to sharedPrefs.
-//                        val inputData = Data.Builder()
-//                            .putString("event_id", event.id)
-//                            .putString("event_name", event.title)
-//                            .putString("donation_amount", donationAmount)
-//                            .build()
-//
-//                        val workRequest = OneTimeWorkRequest.Builder(DonationWorker::class.java)
-//                            .setInputData(inputData)
-//                            .build()
-//
-//                        workManager.enqueue(workRequest)
+                        context.dataStore.edit { preferences ->
+                            preferences[stringPreferencesKey("donation")] = Json.encodeToString<Donation>(Donation(
+                                eventId = event.id,
+                                eventName = event.title,
+                                donationAmount = donationAmount
+                            ))
+                        }
                     }
                 }
             }

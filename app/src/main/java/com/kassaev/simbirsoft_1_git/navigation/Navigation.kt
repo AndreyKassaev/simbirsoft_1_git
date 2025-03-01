@@ -9,6 +9,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,8 +19,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.kassaev.simbirsoft_1_git.core.uikit.BottomBar
 import com.kassaev.simbirsoft_1_git.core.uikit.FAB
 import com.kassaev.simbirsoft_1_git.core.navigation.Router
@@ -38,10 +39,9 @@ val LocalNavController = compositionLocalOf<NavController> {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Navigation() {
+fun Navigation(navController: NavHostController, eventId: String?) {
 
-    val navController = rememberNavController()
-    var (topAppBar, setTopAppBar) = remember {
+    val (topAppBar, setTopAppBar) = remember {
         mutableStateOf<@Composable () -> Unit>({})
     }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -110,6 +110,11 @@ fun Navigation() {
                     scrollBehavior = scrollBehavior,
                     navController = navController
                 )
+            }
+            LaunchedEffect(Unit) {
+                eventId?.let {
+                    navController.navigate("event_detail/$eventId")
+                }
             }
         }
     }

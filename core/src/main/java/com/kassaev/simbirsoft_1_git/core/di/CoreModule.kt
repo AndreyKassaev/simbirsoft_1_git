@@ -28,12 +28,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class CoreModule {
 
+    @Singleton
     @Provides
     fun provideApplicationContext(@ApplicationContext context: Context): Context = context
 
+    @Singleton
     @Provides
     fun provideAssetManager(application: Application): AssetManager = application.assets
 
+    @Singleton
     @Provides
     fun provideApiService(): ApiService {
 
@@ -56,17 +59,21 @@ class CoreModule {
             .create(ApiService::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideDatabase(application: Application): Database {
         return Room.databaseBuilder(application, Database::class.java, "app.db").build()
     }
 
+    @Singleton
     @Provides
     fun provideCategoryDao(database: Database): CategoryDao = database.categoryDao()
 
+    @Singleton
     @Provides
     fun provideEventDao(database: Database): EventDao = database.eventDao()
 
+    @Singleton
     @Provides
     fun provideCategoryRepository(assetManager: AssetManager, apiService: ApiService, categoryDao: CategoryDao): CategoryRepository =
         CategoryRepositoryImpl(
@@ -75,6 +82,7 @@ class CoreModule {
             categoryDao = categoryDao,
         )
 
+    @Singleton
     @Provides
     fun provideEventRepository(assetManager: AssetManager, apiService: ApiService, eventDao: EventDao): EventRepository =
         EventRepositoryImpl(
