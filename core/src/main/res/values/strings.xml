@@ -71,4 +71,8 @@
     <string name="search_advice_example">Example:</string>
     <string name="master_class">master-class</string>
     <string name="search_help">help</string>
+    <string name="amount">Amount</string>
+    <string name="ruble">Ruble</string>
+    <string name="thanks">Thanks!</string>
+    <string name="remind_later">Remind later</string>
 </resources>
