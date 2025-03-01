@@ -95,4 +95,7 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // https://coil-kt.github.io/coil/gifs/
     implementation(libs.coil.gif)
+
+    //Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
 }

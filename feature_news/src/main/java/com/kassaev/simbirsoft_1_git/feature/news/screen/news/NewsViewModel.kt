@@ -1,6 +1,5 @@
 package com.kassaev.simbirsoft_1_git.feature.news.screen.news
 
-import android.app.Application
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -8,7 +7,7 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kassaev.simbirsoft_1_git.core.util.FilterSwitchState
 import com.kassaev.simbirsoft_1_git.feature.news.service.EventAssetReaderService
@@ -26,9 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    private val application: Application,
     @ApplicationContext private val context: Context
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val stateMutable = MutableStateFlow<NewsScreenState>(NewsScreenState.Loading())
     private val state: StateFlow<NewsScreenState> = stateMutable
