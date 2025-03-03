@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,11 @@ import com.kassaev.simbirsoft_1_git.core.util.Category
 
 private const val GRID_SIZE = 2
 
+@Composable
+fun HelpScreen(){
+    Box(Modifier.testTag("helpScreen")){}
+}
+
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,7 +71,6 @@ fun HelpScreen(
     navController: NavHostController,
 ) {
     val state = viewModel.getStateFlow().collectAsStateWithLifecycle().value
-
     LaunchedEffect(Unit) {
         setTopAppBar {
             GetTopAppBar(
