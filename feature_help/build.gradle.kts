@@ -91,4 +91,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
     androidTestImplementation(kotlin("test"))
+    // https://mvnrepository.com/artifact/com.google.dagger/hilt-android-testing
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.55")
+
 }
