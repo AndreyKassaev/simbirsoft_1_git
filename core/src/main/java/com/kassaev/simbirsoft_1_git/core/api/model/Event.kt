@@ -17,4 +17,21 @@ data class Event(
     val phone: String,
     val address: String,
     val organization: String
-)
+) {
+    companion object {
+        val default = Event(
+            id = "",
+            name = "",
+            startDate = 0L,
+            endDate = 0L,
+            description = "",
+            status = 0L,
+            photos = emptyList(),
+            category = "",
+            createdAt = 0L,
+            phone = "",
+            address = "",
+            organization = ""
+        )
+    }
+}

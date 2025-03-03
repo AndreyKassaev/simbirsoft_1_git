@@ -5,4 +5,13 @@ data class Category(
     val nameEn: String,
     val name: String,
     val image: String
-)
+) {
+    companion object {
+        val default = Category(
+            id = "1",
+            nameEn = "default",
+            name = "default",
+            image = "imageUrl"
+        )
+    }
+}

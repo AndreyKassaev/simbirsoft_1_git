@@ -1,17 +1,16 @@
 package com.kassaev.simbirsoft_1_git.core
 
+import com.kassaev.simbirsoft_1_git.core.util.EventMapper
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import com.kassaev.simbirsoft_1_git.core.api.model.Event as ApiEvent
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun `ids are equals`() {
+        val apiEvent = ApiEvent.default
+        val uiEvent = EventMapper.apiToUi(apiEvent)
+        assertEquals(apiEvent.id, uiEvent.id)
     }
 }

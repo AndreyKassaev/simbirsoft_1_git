@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -35,6 +37,10 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    packagingOptions {
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE-notice.md")
     }
 }
 
@@ -74,4 +80,18 @@ dependencies {
     implementation(libs.coil.network.okhttp)
     // https://coil-kt.github.io/coil/gifs/
     implementation(libs.coil.gif)
+
+    //Test
+    // https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.8.0-beta02")
+    // https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-manifest
+    androidTestImplementation("androidx.compose.ui:ui-test-manifest:1.8.0-beta02")
+    //https://mvnrepository.com/artifact/io.mockk/mockk
+    androidTestImplementation("io.mockk:mockk-android:1.13.17")
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")
+    androidTestImplementation(kotlin("test"))
+    // https://mvnrepository.com/artifact/com.google.dagger/hilt-android-testing
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.55")
+
 }
